@@ -4,7 +4,9 @@ const societeSchema = mongoose.Schema({
     adress:{type:String},
     Ncontrat:{type:String},
     Nfacture:{type:String},
-    TVA:{type:String}
+    TVA:{type:String},
+    Description:{type:String},
+    Anneé:{type:String}
 });
 
-module.exports = mongoose.model('socite',societeSchema);
+module.exports = mongoose.model('societe',societeSchema);
