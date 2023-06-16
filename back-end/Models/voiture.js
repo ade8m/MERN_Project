@@ -6,7 +6,8 @@ const voitureSchema = mongoose.Schema({
     couleur:{type:String},
     Nassurrance:{type:String},
     Nvig:{type:String},
-    Nlaiss:{type:String}
+    Nlaiss:{type:String},
+    disponibilite:{type:String}
 });
 
 module.exports = mongoose.model('voiture',voitureSchema);
