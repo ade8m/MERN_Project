@@ -10,6 +10,7 @@ exports.addVoiture =(req,res)=>{
         Nassurrance:req.body.Nassurrance,
         Nvig:req.body.Nvig,
         Nlaiss:req.body.Nlaiss,
+        disponibilite:req.body.disponibilite,
     });
     NewVoiture.save()
     .then(()=>{
@@ -25,9 +26,9 @@ exports.addVoiture =(req,res)=>{
 exports.UpdateVoiture =(req,res) =>{
 
     const {id} = req.params;
-    const {matricule,Nassurrance,Nlaiss,Nvig,couleur,type,Model} = req.body;
+    const {matricule,Nassurrance,Nlaiss,Nvig,couleur,type,Model,disponibilite} = req.body;
 
-    voiture.updateOne({_id: id},{matricule,Nassurrance,Nlaiss,Nvig,couleur,type,Model})
+    voiture.updateOne({_id: id},{matricule,Nassurrance,Nlaiss,Nvig,couleur,type,Model,disponibilite})
     .then(()=>{
         res.status(200).json();
         console.log('voiture updated successfully' );
@@ -36,4 +37,26 @@ exports.UpdateVoiture =(req,res) =>{
         res.status(400).json({ error });
       });
 
+};
+
+exports.DeleteVoiture =(req,res) =>{
+
+    voiture.deleteOne({_id: req.params.id})
+    .then(() =>{
+        res.status(200).json();
+      console.log('voiture supprimer !!');
+    })
+    .catch((error) => {
+      res.status(400).json({ error });
+    });
+  };
+exports.getVoiture =(req,res)=>{
+    voiture.getOne({_id: req.params.id})
+    .then(()=>{
+        res.status(200).json(voiture);
+        console.log('get success!!');
+    })
+    .catch((error) => {
+        res.status(400).json({ error });
+      });
 };

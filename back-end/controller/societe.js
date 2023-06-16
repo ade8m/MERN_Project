@@ -53,6 +53,10 @@ exports.DeleteSociete =(req,res) =>{
 exports.getSociete = (req,res) =>{
 societe.findOne({_id: req.params.id})
 .then(() =>{
-  res.status(200).json 
+  res.status(200).json();
+  console.log('get societe successeflly !!');
 })
+.catch((error) => {
+  res.status(400).json({ error });
+});
 };
