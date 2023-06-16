@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const societeRoute = require('./Routes/societe');
+const voitureRoute = require('./Routes/voiture');
 const app = express();
 require('dotenv').config();
 
@@ -19,7 +20,8 @@ const connect = async () =>{
 app.use(bodyParser.json());
 app.use(express.json());
 
-app.use("/",societeRoute);
+app.use("/societe",societeRoute);
+app.use("/voiture",voitureRoute);
 
 
 
