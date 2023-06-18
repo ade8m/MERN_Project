@@ -1,7 +1,7 @@
 const user = require('../Models/user');
 const bcrypt = require('bcrypt');
 
-exports.registre =(req,res,next) =>{
+exports.registre =(req,res) =>{
 
     const {password,Email,Nom} = req.body;
          if (password.length <6){
@@ -33,7 +33,8 @@ bcrypt.hash(password,10).then(async (hash)=>{
 )
 };
 
-exports.login = async (req, res) => {
+exports.login =  (req, res) => {
+
     const { Nom, password } = req.body;
     
     if (!Nom || !password) {
@@ -43,7 +44,7 @@ exports.login = async (req, res) => {
     }
     
     try {
-      const usr = await user.findOne({ Nom });
+      const usr =  user.findOne({ Nom });
       
       if (!usr) {
         return res.status(400).json({
