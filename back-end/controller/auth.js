@@ -43,45 +43,38 @@ bcrypt.hash(password,10).then(async (hash)=>{
 )
 };
 
-exports.login =  (req, res) => {
+exports.login = async (req, res) => {
+  const { Nom, password } = req.body;
 
-    const { Nom, password } = req.body;
-    
-    if (!Nom || !password) {
+  if (!Nom || !password) {
+    return res.status(400).json({
+      message: "Name or password not provided",
+    });
+  }
+
+  try {
+    const usr = await user.findOne({ Nom });
+
+    if (!usr) {
       return res.status(400).json({
-        message: "Name or password not provided",
+        message: "Login not successful",
+        error: "User not found",
       });
     }
-    
-    try {
-      const usr =  user.findOne({ Nom });
-      
-      if (!usr) {
-        return res.status(400).json({
-          message: "Login not successful",
-          error: "User not found",
-        });
-      }
-      
-      bcrypt.compare(password, usr.password)
-        .then((result) => {
-          if (result) {
-            res.status(200).json({ message: "Login successful!" });
-          } else {
-            res.status(400).json({ message: "Incorrect password" });
-          }
-        })
-        .catch((error) => {
-          res.status(500).json({
-            message: "An error occurred",
-            error: error.message,
-          });
-        });
-    } catch (error) {
-      res.status(500).json({
-        message: "An error occurred",
-        error: error.message,
-      });
+
+    const isPasswordMatch = await bcrypt.compare(password, usr.password);
+
+    if (isPasswordMatch) {
+      return res.status(200).json({ message: "Login successful!" });
+    } else {
+      return res.status(400).json({ message: "Incorrect password" });
     }
-  };
+  } catch (error) {
+    return res.status(500).json({
+      message: "An error occurred",
+      error: error.message,
+    });
+  }
+};
+
   
