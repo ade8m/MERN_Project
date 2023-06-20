@@ -1,4 +1,7 @@
 const voiture = require('../Models/voiture');
+const color = require('../Models/couleur');
+
+
 
 
 exports.addVoiture =(req,res)=>{
