@@ -27,33 +27,27 @@ bcrypt.hash(password,10).then(async (hash)=>{
          })
          .then((user) =>{
             const token = GenToken(user);
-            res.status(200).json({
-                message: "User successfully created",
-                user,
-                token,
-            });
+            res.status(200).json();
+            console.log("user add")
           })
          .catch((error) =>
-         res.status(400).json({
-           message: "User not successful created",
-           error: error.message,
-         })
+         res.status(400).json()
        );
         }
 )
 };
 
 exports.login = async (req, res) => {
-  const { Nom, password } = req.body;
+  const { Email, password } = req.body;
 
-  if (!Nom || !password) {
+  if (!Email || !password) {
     return res.status(400).json({
       message: "Name or password not provided",
     });
   }
 
   try {
-    const usr = await user.findOne({ Nom });
+    const usr = await user.findOne({ Email });
 
     if (!usr) {
       return res.status(400).json({
@@ -62,9 +56,9 @@ exports.login = async (req, res) => {
       });
     }
 
-    const isPasswordMatch = await bcrypt.compare(password, usr.password);
+    const isPassword = await bcrypt.compare(password, usr.password);
 
-    if (isPasswordMatch) {
+    if (isPassword) {
       return res.status(200).json({ message: "Login successful!" });
     } else {
       return res.status(400).json({ message: "Incorrect password" });
