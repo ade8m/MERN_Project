@@ -10,13 +10,33 @@ export const SignComponent =()=>{
       };
 
     const handlePasswordChange = (e) =>{
-        setPassword(e.target.value);
+        setPassword(e.target.value)     ;
     };
     const handleFormSubmit = (e) =>{
         e.prefentDefault();
+    
+
+    //login user
+    const loginUser = {
+      email:setEmail,
+      password:setPassword,
     };
-
-
+    fetch('http://localhost:3001/auth/login/',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(loginUser),
+    })
+    .then((Response) => Response.json())
+    .then((data) => {
+      // Handle the response from the backend
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  };
 return(
 
     <div className="center-container">

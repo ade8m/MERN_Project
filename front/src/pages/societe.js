@@ -1,9 +1,43 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 export function SocieteComponent() {
+
+  const [societeData, setSocieteData] = useState({});
+
+  const handleInputChange = (event) => {
+    const { id, value } = event.target;
+    setSocieteData((prevData) => ({ ...prevData, [id]: value }));
+
+  };
+
+  const handleAddSociete = ()=>{
+    fetch('http://localhost:3001/societe/New', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(societeData),
+    })
+    .then((response) => response.json())
+      .then((data) => {
+        console.log('Societe added:', data);
+      })
+      .catch((error) => {
+        console.error('Error adding societe:', error); 
+      });
+  };
+
+
+
+
+
+
+
+
   return (
   
       <div className="containe">
+        <h3> societe:</h3>
       <div className="row">
         <div className="col-md-6">
           <div className="mb-3">
@@ -41,6 +75,14 @@ export function SocieteComponent() {
             <textarea className="form-control" id="textarea" rows="3"></textarea>
           </div>
         </div>
+        <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleAddSociete}
+            
+          >
+            Add Societe
+          </button>
       </div>
     </div>
   )
