@@ -1,8 +1,14 @@
 import React from 'react';
 
 export function VoitureComponent() {
+
+
+  const handleAddSociete=()=>{
+
+  };
   return (
     <div className="containe">
+      <h3>voir votre voiture:</h3>
       <div className="row">
         <div className="col-md-6">
           <div className="mb-3">
@@ -57,6 +63,14 @@ export function VoitureComponent() {
             <input type="number" className="form-control" id="tfNumero" />
           </div>
         </div>
+        <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleAddSociete}
+            
+          >
+            Ajouter Nouveau Voiture 
+          </button>
       </div>
     </div>
   );
