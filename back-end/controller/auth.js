@@ -38,6 +38,8 @@ bcrypt.hash(password,10).then(async (hash)=>{
 };
 
 exports.login = async (req, res) => {
+
+  
   const { Email, password } = req.body;
  
   if (!Email || !password) {
