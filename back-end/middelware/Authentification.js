@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
 
 exports.verifyToken = (req,res,next)=>{
-    const token = req.headers.authorization;
+  const token = req.headers.Authorization || req.headers.authorization;
+
     if (!token) {
         return res.status(401).json({
           message: 'Unauthorized access',
@@ -12,7 +13,7 @@ exports.verifyToken = (req,res,next)=>{
     
         req.user = decoded;
         next();
-    
+
         }catch (error) {
             return res.status(401).json({
               message: 'Invalid token',
@@ -26,7 +27,6 @@ exports.verifyAdmin = (req, res, next) => {
       return res.status(403).json({
         message: 'Access denied..Your Not Admin',
       });
-    }
-  
+    } 
     next();
   };

@@ -54,7 +54,7 @@ exports.DeleteVoiture =(req,res) =>{
     });
   };
 exports.getVoiture =(req,res)=>{
-    voiture.getOne({_id: req.params.id})
+    voiture.findOne({_id: req.params.id})
     .then(()=>{
         res.status(200).json(voiture);
         console.log('get success!!');

@@ -1,6 +1,6 @@
 const user = require('../Models/user');
 const bcrypt = require('bcrypt');
-const jwt =require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 
 
@@ -28,7 +28,7 @@ bcrypt.hash(password,10).then(async (hash)=>{
          .then((user) =>{
             const token = GenToken(user);
             res.status(200).json({token});
-            console.log("user add")
+            console.log(token);
           })
          .catch((error) =>
          res.status(400).json({error})
@@ -39,7 +39,7 @@ bcrypt.hash(password,10).then(async (hash)=>{
 
 exports.login = async (req, res) => {
   const { Email, password } = req.body;
-
+ 
   if (!Email || !password) {
     return res.status(400).json({
       message: "Name or password not provided",
@@ -59,7 +59,7 @@ exports.login = async (req, res) => {
     const isPassword = await bcrypt.compare(password, usr.password);
 
     if (isPassword) {
-      const token = GenToken(usr);
+      const token = jwt.sign({ userId: usr.id }, process.env.secret_key);
       return res.status(200).json({ message: "Login successful!",token });
     } else {
       return res.status(400).json({ message: "Incorrect password" });
