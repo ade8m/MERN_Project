@@ -1,4 +1,5 @@
 import React,{useState} from 'react';
+import { login, logout, isAuthenticated } from '../service/authTokn';
 
 export const SignComponent =()=>{
 
@@ -12,31 +13,28 @@ export const SignComponent =()=>{
     const handlePasswordChange = (e) =>{
         setPassword(e.target.value)     ;
     };
-    const handleFormSubmit = (e) =>{
+    const handleFormSubmit = (e) => {
         e.prefentDefault();
     
 
-    //login user
+    // Login user
     const loginUser = {
-      email:setEmail,
-      password:setPassword,
+      email: email,
+      password: password,
     };
-    fetch('http://localhost:3001/auth/login/',{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(loginUser),
-    })
-    .then((Response) => Response.json())
-    .then((data) => {
-      // Handle the response from the backend
-      console.log(data);
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
+
+   login(loginUser)
+      .then((data) => {
+        
+        console.log(data);
+        alert('login wuth success');
+      })
+      .catch((error) => {
+        alert('login fail');
+        console.error('Error:', error);
+      });
   };
+
 return(
 
     <div className="center-container">

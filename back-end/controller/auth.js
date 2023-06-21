@@ -27,11 +27,11 @@ bcrypt.hash(password,10).then(async (hash)=>{
          })
          .then((user) =>{
             const token = GenToken(user);
-            res.status(200).json();
+            res.status(200).json({token});
             console.log("user add")
           })
          .catch((error) =>
-         res.status(400).json()
+         res.status(400).json({error})
        );
         }
 )
@@ -59,7 +59,8 @@ exports.login = async (req, res) => {
     const isPassword = await bcrypt.compare(password, usr.password);
 
     if (isPassword) {
-      return res.status(200).json({ message: "Login successful!" });
+      const token = GenToken(usr);
+      return res.status(200).json({ message: "Login successful!",token });
     } else {
       return res.status(400).json({ message: "Incorrect password" });
     }

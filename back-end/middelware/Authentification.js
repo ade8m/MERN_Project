@@ -1,8 +1,5 @@
 const jwt = require('jsonwebtoken');
 
-require('dotenv').config;
-
-
 exports.verifyToken = (req,res,next)=>{
     const token = req.headers.authorization;
     if (!token) {
@@ -27,7 +24,7 @@ exports.verifyToken = (req,res,next)=>{
 exports.verifyAdmin = (req, res, next) => {
     if (!req.user.isAdmin) {
       return res.status(403).json({
-        message: 'Access denied',
+        message: 'Access denied..Your Not Admin',
       });
     }
   
