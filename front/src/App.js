@@ -22,7 +22,7 @@ const App = () => {
     <BrowserRouter>
       <SideBarComponent>
         <Routes> 
-          <Route path="/" element={<SignComponent/>} />
+          <Route path="/" element={<AdminPage/>} />
           <Route path="/societe" element={<SocieteComponent />} />
           <Route path="/voiture" element={<VoitureComponent />} />
           <Route path="/facture" element={<FactureComponent />} />

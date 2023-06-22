@@ -30,33 +30,33 @@ exports.UpdateSociete = (req, res) => {
 
   societe
     .updateOne({ _id: id }, { nom, adress, Ncontrat, Nfacture,Description ,Anneé,TVA: tva })
-    .then(() => {
-      res.status(200).json();
+    .then((result) => {
+      res.status(200).json(result);
       console.log('Societe updated successfully' );
     })
     .catch((error) => {
-      res.status(400).json({ error });
+      res.status(400).json(error);
     });
 };
 
 exports.DeleteSociete =(req,res) =>{
   societe.deleteOne({_id: req.params.id})
-  .then(() =>{
-      res.status(200).json();
+  .then((result) =>{
+      res.status(200).json(result);
     console.log('delete societed !!');
   })
   .catch((error) => {
-    res.status(400).json({ error });
+    res.status(400).json(error);
   });
 };
 
 exports.getSociete = (req,res) =>{
 societe.findOne({_id: req.params.id})
-.then(() =>{
-  res.status(200).json();
+.then((result) =>{
+  res.status(200).json(result);
   console.log('get societe successeflly !!');
 })
 .catch((error) => {
-  res.status(400).json({ error });
+  res.status(400).json(error);
 });
 };
