@@ -15,16 +15,16 @@ exports.getAll =(req,res)=>{
 
 exports.UpdateUser =(req,res)=>{
     const {id} = req.params;
-    const{Nom,password,Email} = req.body;
+    const{Nom,Email} = req.body;
 
-    user.findOneAndUpdate({_id :id},{Nom,password,Email})
+    user.findOneAndUpdate({_id :id},{Nom,Email})
     .then((result)=>{
         res.status(200).json(result)
-        console.log('usr updated!!');
+        console.log('user updated!!');
     })
     .catch((error)=>{
         res.status(401).json(error)
-        console.log('usr dont updated!!');
+        console.log('user dont updated!!');
     })
 };
 
@@ -40,7 +40,7 @@ exports.getUser = (req,res) =>{
 };
 
 exports.DeleteUser =(req,res) =>{
-    
+
     user.deleteOne({_id: req.params.id})
     .then((result) =>{
         res.status(200).json(result);
