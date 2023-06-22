@@ -28,7 +28,7 @@ const App = () => {
           <Route path="/facture" element={<FactureComponent />} />
           <Route path="/contrat" element={<ContratComponent />} />
         </Routes>
-      </SideBarComponent>
+     </SideBarComponent>
    </BrowserRouter>
   );
   };

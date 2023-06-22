@@ -6,7 +6,7 @@ export function AdminPage() {
 
 
   const [users, setUsers] = useState([]);
-  const [updatedUser, setUpdatedUser] = useState({ name: '', email: '' });
+  const [updatedUser, setUpdatedUser] = useState({ Nom: '', Email: '' });
   const [editingUserId, setEditingUserId] = useState(null);
 
   useEffect(() => {
@@ -34,14 +34,14 @@ export function AdminPage() {
   const updateUser = (userId) => {
     setEditingUserId(userId);
     const userToUpdate = users.find((user) => user._id === userId);
-    setUpdatedUser({ name: userToUpdate.name, email: userToUpdate.email });
+    setUpdatedUser({ Nom: userToUpdate.Nom, Email: userToUpdate.Email });
   };
 
   const saveUpdatedUser = async (userId) => {
     try {
       await axios.put(`http://localhost:3001/api/update/${userId}`, updatedUser);
       setEditingUserId(null);
-      setUpdatedUser({ name: '', email: '' });
+      setUpdatedUser({ Nom: '', Email: '' });
       fetchUsers();
     } catch (error) {
       console.error(error);
@@ -55,7 +55,7 @@ export function AdminPage() {
         <thead>
           <tr>
             <th>#</th>
-            <th>Name</th>
+            <th>Nom</th>
             <th>Email</th>
             <th>Actions</th>
           </tr>
@@ -83,13 +83,13 @@ export function AdminPage() {
                       type="text"
                       placeholder='Entre nouveau nom' 
                       value={updatedUser.Nom}
-                      onChange={(e) => setUpdatedUser({ ...updatedUser, name: e.target.value })}
+                      onChange={(e) => setUpdatedUser({ ...updatedUser, Nom: e.target.value })}
                     />
                     <input
                       type="text"
-                      placeholder='Entre nouveau email'
-                      value={updatedUser.email}
-                      onChange={(e) => setUpdatedUser({ ...updatedUser, email: e.target.value })}
+                      placeholder='Entre nouveau Email'
+                      value={updatedUser.Email}
+                      onChange={(e) => setUpdatedUser({ ...updatedUser, Email: e.target.value })}
                     />
                     <Button variant="primary" onClick={() => saveUpdatedUser(user._id)}>
                       Save
