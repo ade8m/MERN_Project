@@ -1,0 +1,16 @@
+.alert {
+    padding: 10px;
+    margin-bottom: 10px;
+    display: none;
+  }
+  
+  .alert-success {
+    background-color: #d4edda;
+    color: #22993e;
+  }
+  
+  .alert-danger {
+    background-color: #f8d7da;
+    color: #e62236;
+  }
+  
