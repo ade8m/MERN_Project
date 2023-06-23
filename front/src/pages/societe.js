@@ -85,7 +85,7 @@ export function SocieteComponent() {
             <label htmlFor="nomSociete" className="form-label">Nom Societe</label>
             <input type="text" className="form-control" id="nomS"  value={societeData.nom}
               onChange={handleInputChange}  list="existingNoms"/>
-              <datalist id="existingNoms">
+              <datalist id="existingNoms" style={{color:'#d4edda' }}>
                    {existingNoms.map((nom) => (
                     <option key={nom} value={nom} />
                      ))}
