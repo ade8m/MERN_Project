@@ -36,6 +36,20 @@ export function SocieteComponent() {
   };
 
   const handleAddSociete = ()=>{
+
+    if (
+      !societeData.nom ||
+      !societeData.adress ||
+      !societeData.Anneé ||
+      !societeData.Description ||
+      !societeData.Ncontrat ||
+      !societeData.Nfacture ||
+      !societeData.TVA
+    ) {
+      showAlert('One or more required fields are missing','error');
+      return;
+    }
+  
     fetch('http://localhost:3001/societe/New', {
       method: 'POST',
       headers: {
@@ -59,13 +73,11 @@ export function SocieteComponent() {
 
 
 
-
-
-
-
   return (
   
       <div className="containe">
+          {/* Alert */}
+          <div id="alert" className="alert" style={{ display: 'none' }}></div>
         <h3> societe:</h3>
       <div className="row">
         <div className="col-md-6">
@@ -121,8 +133,7 @@ export function SocieteComponent() {
           >
             Add Societe
           </button>
-          {/* Alert */}
-        <div id="alert" className="alert" style={{ display: 'none' }}></div>
+        
       </div>
     </div>
   )

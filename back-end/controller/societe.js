@@ -1,6 +1,8 @@
 const societe = require('../Models/societe');
 
 exports.addsociete =(req,res) =>{
+
+  
     
     const newSociete = new societe({
         nom:req.body.nomS,
@@ -12,6 +14,7 @@ exports.addsociete =(req,res) =>{
         Anneé:req.body.annee
 
       });
+     
       newSociete.save()
       .then(()=>{
         res.status(200).json(newSociete);
