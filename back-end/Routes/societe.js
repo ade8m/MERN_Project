@@ -5,6 +5,6 @@ const societeControl = require('../controller/societe');
 router.post("/New",societeControl.addsociete);
 router.post("/update/:id",societeControl.UpdateSociete);
 router.delete("/delete/:id",societeControl.DeleteSociete);
-router.get("/get/:id",societeControl.getSociete);
+router.get("/get",societeControl.getSociete);
 
 module.exports = router;

@@ -1,12 +1,37 @@
 import React, { useState } from 'react'
+import { showAlert } from '../service/alert';
+
 
 export function SocieteComponent() {
 
+
   const [societeData, setSocieteData] = useState({});
+  const [existingNoms, setExistingNoms] = useState([]);
+
+
+  
+
+  const fetchSocietes = () => {
+    fetch('http://localhost:3001/societe/get')
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Societes retrieved:', data);
+        const nomSocietes = data.map((societe) => societe.nom);
+        setExistingNoms(nomSocietes);
+      })
+      .catch((error) => {
+        console.error('Error retrieving societes:', error);
+      });
+  };
+  
 
   const handleInputChange = (event) => {
     const { id, value } = event.target;
     setSocieteData((prevData) => ({ ...prevData, [id]: value }));
+
+    if (id === 'nomS') {
+      fetchSocietes();
+    }
 
   };
 
@@ -21,10 +46,14 @@ export function SocieteComponent() {
     .then((response) => response.json())
       .then((data) => {
         console.log('Societe added:', data);
+        showAlert('Societe added successfully!', 'success');
       })
       .catch((error) => {
         console.error('Error adding societe:', error); 
+        showAlert('Failed to add societe.', 'error');
       });
+
+      
   };
 
 
@@ -42,37 +71,46 @@ export function SocieteComponent() {
         <div className="col-md-6">
           <div className="mb-3">
             <label htmlFor="nomSociete" className="form-label">Nom Societe</label>
-            <input type="text" className="form-control" id="nomSociete" />
+            <input type="text" className="form-control" id="nomS"  value={societeData.nom}
+              onChange={handleInputChange}  list="existingNoms"/>
+              <datalist id="existingNoms">
+                   {existingNoms.map((nom) => (
+                    <option key={nom} value={nom} />
+                     ))}
+              </datalist>
           </div>
           <div className="mb-3">
             <label htmlFor="adresse" className="form-label">Adresse</label>
-            <input type="text" className="form-control" id="adresse" />
+            <input type="text" className="form-control" id="adressS"  value={societeData.adress}
+              onChange={handleInputChange}/>
           </div>
           <div className="mb-3">
             <label htmlFor="tva" className="form-label">TVA</label>
-            <input type="number" className="form-control" id="tva" />
+            <input type="number" className="form-control" id="tva"  value={societeData.TVA}
+              onChange={handleInputChange} />
           </div>
           <div className="mb-3">
             <label htmlFor="annee" className="form-label">Année</label>
-            <input type="text" className="form-control" id="annee" />
+            <input type= "date" className="form-control" id="annee" value={societeData.Anneé}
+              onChange={handleInputChange} />
           </div>
         </div>
         <div className="col-md-6">
           <div className="mb-3">
             <label htmlFor="numContrat" className="form-label">Numéro Contrat</label>
-            <input type="number" className="form-control" id="numContrat" />
+            <input type="number" className="form-control" id="numcontrat" value={societeData.Ncontrat}
+              onChange={handleInputChange} />
           </div>
           <div className="mb-3">
             <label htmlFor="numFacture" className="form-label">Numéro Facture</label>
-            <input type="number" className="form-control" id="numFacture" />
+            <input type="number" className="form-control" id="numfacture" value={societeData.Nfacture}
+              onChange={handleInputChange} />
           </div>
-          <div className="mb-3">
-            <label htmlFor="tfNumero" className="form-label">TF Numéro</label>
-            <input type="number" className="form-control" id="tfNumero" />
-          </div>
+          
           <div className="mb-3">
             <label htmlFor="textarea" className="form-label">Textarea</label>
-            <textarea className="form-control" id="textarea" rows="3"></textarea>
+            <textarea className="form-control" id="description" rows="3" value={societeData.Description}
+              onChange={handleInputChange} ></textarea>
           </div>
         </div>
         <button
@@ -83,6 +121,8 @@ export function SocieteComponent() {
           >
             Add Societe
           </button>
+          {/* Alert */}
+        <div id="alert" className="alert" style={{ display: 'none' }}></div>
       </div>
     </div>
   )

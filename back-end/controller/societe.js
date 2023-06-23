@@ -3,13 +3,13 @@ const societe = require('../Models/societe');
 exports.addsociete =(req,res) =>{
     
     const newSociete = new societe({
-        nom:req.body.nom,
-        adress:req.body.adress,
-        Ncontrat:req.body.Ncontrat,
-        Nfacture:req.body.Nfacture,
+        nom:req.body.nomS,
+        adress:req.body.adressS,
+        Ncontrat:req.body.numcontrat,
+        Nfacture:req.body.numfacture,
         TVA:req.body.tva,
-        Description:req.body.Description,
-        Anneé:req.body.Anneé
+        Description:req.body.description,
+        Anneé:req.body.annee
 
       });
       newSociete.save()
@@ -29,7 +29,7 @@ exports.UpdateSociete = (req, res) => {
   const { nom, adress, Ncontrat, Nfacture, tva,Description,Anneé} = req.body;
 
   societe
-    .updateOne({ _id: id }, { nom, adress, Ncontrat, Nfacture,Description ,Anneé,TVA: tva })
+    .findOneAndUpdate({ _id: id }, { nom, adress, Ncontrat, Nfacture,Description ,Anneé,TVA: tva })
     .then((result) => {
       res.status(200).json(result);
       console.log('Societe updated successfully' );
@@ -51,7 +51,7 @@ exports.DeleteSociete =(req,res) =>{
 };
 
 exports.getSociete = (req,res) =>{
-societe.findOne({_id: req.params.id})
+societe.find()
 .then((result) =>{
   res.status(200).json(result);
   console.log('get societe successeflly !!');
