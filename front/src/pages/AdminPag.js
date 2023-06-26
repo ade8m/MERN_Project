@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, Button } from 'react-bootstrap';
+import { showAlert } from '../service/alert';
+import { Table, Button,Form, Container, Row, Col } from 'react-bootstrap';
 
 export function AdminPage() {
 
@@ -8,6 +9,7 @@ export function AdminPage() {
   const [users, setUsers] = useState([]);
   const [updatedUser, setUpdatedUser] = useState({ Nom: '', Email: '' });
   const [editingUserId, setEditingUserId] = useState(null);
+  const [newUser, setNewUser]= useState({ Nom: '', Email: '', password: '' });
 
   useEffect(() => {
     fetchUsers();
@@ -48,61 +50,134 @@ export function AdminPage() {
     }
   };
 
+  const registerUser = async (e) => {
+    e.preventDefault();
+    if (!newUser.Nom || !newUser.Email || !newUser.password) {
+      showAlert('One or more required fields are missing', 'error');
+      return;
+    };
+    try {
+      await axios.post('http://localhost:3001/auth/add', newUser);
+      setNewUser({ Nom: '', Email: '', password: '' });
+      fetchUsers();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <div>
-      <h1>Admin Page</h1>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Nom</th>
-            <th>Email</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user, index) => (
-            <React.Fragment key={user._id}>
-              <tr>
-                <td>{index + 1}</td>
-                <td>{user.Nom}</td>
-                <td>{user.Email}</td>
-                <td>
-                  <Button variant="danger" onClick={() => deleteUser(user._id)}>
-                    Delete
-                  </Button>
-                  <Button variant="info" onClick={() => updateUser(user._id)}>
-                    Update
-                  </Button>
-                </td>
-              </tr>
-              {user._id === editingUserId && (
+    <Container fluid>
+       
+    <h1 className="text-center mt-3">Admin Page</h1>
+    <Row className="justify-content-center">
+      <Col lg={6} md={6}>
+      <h3 className="text-center mt-3">Add New User</h3>
+         {/* Alert */}
+         <div id="alert" className="alert" style={{ display: 'none' }}></div>
+      
+        <Form onSubmit={registerUser}>
+          <Form.Group controlId="formNom">
+            <Form.Label>Nom</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter Nom"
+              value={newUser.Nom}
+              onChange={(e) => setNewUser({ ...newUser, Nom: e.target.value })}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formEmail">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Enter Email"
+              value={newUser.Email}
+              onChange={(e) => setNewUser({ ...newUser, Email: e.target.value })}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Enter Password"
+              value={newUser.password}
+              onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+            />
+          </Form.Group>
+
+          <div className="d-flex justify-content-first">
+            <Button variant="primary" type="submit">
+              Register
+            </Button>
+          </div>
+        </Form>
+      </Col>
+      <Col lg={6} md={6}>
+        <h3 className="text-center mt-3">Configuration des comptes des utilisateurs:</h3>
+        <div className="d-flex justify-content-center">
+          <Button variant="success" className="mb-3" onClick={fetchUsers}>
+            Get All Users
+          </Button>
+        </div>
+
+        <Table striped bordered hover responsive>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nom</th>
+              <th>Email</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user, index) => (
+              <React.Fragment key={user._id}>
                 <tr>
-                  <td colSpan="4">
-                    <input
-                      type="text"
-                      placeholder='Entre nouveau nom' 
-                      value={updatedUser.Nom}
-                      onChange={(e) => setUpdatedUser({ ...updatedUser, Nom: e.target.value })}
-                    />
-                    <input
-                      type="text"
-                      placeholder='Entre nouveau Email'
-                      value={updatedUser.Email}
-                      onChange={(e) => setUpdatedUser({ ...updatedUser, Email: e.target.value })}
-                    />
-                    <Button variant="primary" onClick={() => saveUpdatedUser(user._id)}>
-                      Save
+                  <td>{index + 1}</td>
+                  <td>{user.Nom}</td>
+                  <td>{user.Email}</td>
+                  <td>
+                    <Button variant="danger" onClick={() => deleteUser(user._id)}>
+                      Delete
+                    </Button>
+                    <Button variant="info" onClick={() => updateUser(user._id)}>
+                      Update
                     </Button>
                   </td>
                 </tr>
-              )}
-            </React.Fragment>
-          ))}
-        </tbody>
-      </Table>
-    </div>
-  );
+                {user._id === editingUserId && (
+                  <tr>
+                    <td colSpan="4">
+                      <input
+                        type="text"
+                        className="form-control mb-2"
+                        placeholder="Enter new Nom"
+                        value={updatedUser.Nom}
+                        onChange={(e) => setUpdatedUser({ ...updatedUser, Nom: e.target.value })}
+                      />
+                      <input
+                        type="text"
+                        className="form-control mb-2"
+                        placeholder="Enter new Email"
+                        value={updatedUser.Email}
+                        onChange={(e) => setUpdatedUser({ ...updatedUser, Email: e.target.value })}
+                      />
+                      <Button variant="primary" onClick={() => saveUpdatedUser(user._id)}>
+                        Save
+                      </Button>
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
+            ))}
+          </tbody>
+        </Table>
+
+        </Col>
+    </Row>
+  </Container>
+);
 }
 
 export default AdminPage;
