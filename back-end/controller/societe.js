@@ -63,3 +63,15 @@ societe.find()
   res.status(400).json(error);
 });
 };
+
+exports.getSocieteNom =(req,res) =>{
+  const {nomS} =req.params
+  societe.findOne({nom:nomS})
+  .then((result) =>{
+    res.status(200).json(result);
+    console.log('get societe successeflly !!');
+  })
+  .catch((error) => {
+    res.status(400).json(error);
+  });
+}
