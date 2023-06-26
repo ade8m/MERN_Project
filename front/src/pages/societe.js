@@ -36,20 +36,24 @@ export function SocieteComponent() {
   };
 
   const handleAddSociete = ()=>{
+// Check if any required fields are empty
+const requiredFields = [
+  'nomS',
+  'adressS',
+  'tva',
+  'annee',
+  'numcontrat',
+  'numfacture',
+  'description',
+];
 
-    if (
-      !societeData.nom ||
-      !societeData.adress ||
-      !societeData.Anneé ||
-      !societeData.Description ||
-      !societeData.Ncontrat ||
-      !societeData.Nfacture ||
-      !societeData.TVA
-    ) {
-      showAlert('One or more required fields are missing','error');
-      return;
-    }
-  
+const isEmpty = requiredFields.some((field) => !societeData[field]);
+
+if (isEmpty) {
+  showAlert('One or more required fields are missing', 'error');
+  return;
+}
+
     fetch('http://localhost:3001/societe/New', {
       method: 'POST',
       headers: {
@@ -93,7 +97,7 @@ export function SocieteComponent() {
           </div>
           <div className="mb-3">
             <label htmlFor="adresse" className="form-label">Adresse</label>
-            <input type="text" className="form-control" id="adressS"  value={societeData.adress}
+            <input type="text" className="form-control" id="adressS"  value={societeData.address}
               onChange={handleInputChange}/>
           </div>
           <div className="mb-3">
@@ -129,9 +133,10 @@ export function SocieteComponent() {
             type="button"
             className="btn btn-primary"
             onClick={handleAddSociete}
+            style={{margin :"20px "}}
             
           >
-            Add Societe
+            Ajouter Nouveau  Societe
           </button>
         
       </div>
