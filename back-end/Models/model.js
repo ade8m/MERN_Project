@@ -1,8 +1,7 @@
 const mongoose =require('mongoose');
 const modelSchema = mongoose.Schema({
 
-    Model:{type:String,
-        unique:true}
+    model:{type:String}
 
 });
 module.exports = mongoose.model('Model',modelSchema);

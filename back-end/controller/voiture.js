@@ -4,47 +4,31 @@ const Model = require('../Models/model');
 
 
 exports.addVoiture = async (req, res) => {
-  try {
-    const { matricule, type, Nassurrance, Nvig, Nlaiss, disponibilite } = req.body;
-    const colorName = req.body.colorName;
-    const modelName = req.body.modelName;
+ 
 
-    // Create the color if it doesn't exist
-    let color = await Color.findOne({ name: colorName }).exec();
-    if (!color) {
-      color = new Color({ name: colorName });
-      await color.save();
-    }
-
-    // Create the model if it doesn't exist
-    let model = await Model.findOne({ name: modelName }).exec();
-    if (!model) {
-      model = new Model({ name: modelName });
-      await model.save();
-    }
-
-    // Create the voiture object
+   
     const newVoiture = new voiture({
-      matricule,
-      type,
-      Nassurrance,
-      Nvig,
-      Nlaiss,
-      disponibilite,
-      color: color._id,
-      model: model._id,
-      colorName,
-      modelName
+      matricule:req.body.matricl,
+      type:req.body.type,
+      Nassurrance:req.body.assur,
+      Nvig:req.body.vigni,
+      Nlaiss:req.body.laispasse,
+      disponibilite:req.body.dispo,  
+      color:req.body.couleur,
+      model:req.body.model,
     });
 
-    // Save the voiture
-    await newVoiture.save();
+    
+   newVoiture.save()
 
+  .then(()=>{
     res.status(200).json(newVoiture);
-    console.log('Voiture created successfully!');
-  } catch (error) {
-    res.status(400).json(error);
-  }
+    console.log("voiture created!!");
+  })
+  .catch((error) =>{
+    res.status(400).json(error)
+  });
+
 };
 
 exports.UpdateVoiture =(req,res) =>{
