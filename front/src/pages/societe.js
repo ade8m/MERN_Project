@@ -7,6 +7,8 @@ export function SocieteComponent() {
 
   const [societeData, setSocieteData] = useState({});
   const [existingNoms, setExistingNoms] = useState([]);
+  const [id, setId] = useState('');
+
 
   useEffect(() => {
     fetchSocietes();
@@ -20,6 +22,11 @@ export function SocieteComponent() {
         console.log('Societes retrieved:', data);
         const nomSocietes = data.map((societe) => societe.nom);
         setExistingNoms(nomSocietes);
+        // Set the 'id' value if needed
+      if (data.length > 0) {
+        setId(data[0]._id); // Assuming you want to set the 'id' with the first societe's _id
+      }
+  
       })
       .catch((error) => {
         console.error('Error retrieving societes:', error);
@@ -76,6 +83,45 @@ if (isEmpty) {
 
       
   };
+
+  const handleUpdateSociete = () => {
+    // Check if any required fields are empty
+    const requiredFields = [
+      'nomS',
+      'adressS',
+      'tva',
+      'annee',
+      'numcontrat',
+      'numfacture',
+      'description',
+    ];
+  
+    const isEmpty = requiredFields.some((field) => !societeData[field]);
+  
+    if (isEmpty) {
+      showAlert('One or more required fields are missing', 'error');
+      return;
+    }
+  
+    fetch(`http://localhost:3001/societe/update/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(societeData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Societe updated:', data);
+        showAlert('Societe updated successfully!', 'success');
+        // Perform any necessary actions after successful update
+      })
+      .catch((error) => {
+        console.error('Error updating societe:', error);
+        showAlert('Failed to update societe.', 'error');
+      });
+  };
+  
 
 
 
@@ -135,13 +181,11 @@ if (isEmpty) {
         <button
             type="button"
             className="btn btn-primary"
-            onClick={handleAddSociete}
-            style={{margin :"20px "}}
-            
-          >
-            Ajouter Nouveau  Societe
-          </button>
-        
+            onClick={handleAddSociete} style={{margin:'5px'}}> Ajouter Nouveau  Societe </button>                    
+          <button
+            type="button"
+            className="btn btn-info"
+            onClick={handleUpdateSociete}>Update Societe </button>
       </div>
     </div>
   )

@@ -32,7 +32,7 @@ exports.UpdateSociete = (req, res) => {
   const { nom, adress, Ncontrat, Nfacture, tva,Description,Anneé} = req.body;
 
   societe
-    .findOneAndUpdate({ _id: id }, { nom, adress, Ncontrat, Nfacture,Description ,Anneé,TVA: tva })
+    .findByIdAndUpdate({ _id: id }, { nom, adress, Ncontrat, Nfacture,Description ,Anneé,TVA: tva })
     .then((result) => {
       res.status(200).json(result);
       console.log('Societe updated successfully' );
