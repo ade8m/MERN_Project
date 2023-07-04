@@ -138,7 +138,7 @@ export function AdminPage() {
                   <td>{user.Nom}</td>
                   <td>{user.Email}</td>
                   <td>
-                    <Button variant="danger" onClick={() => deleteUser(user._id)}>
+                    <Button variant="danger"  style={{margin:'5px'}} onClick={() => deleteUser(user._id)}>
                       Delete
                     </Button>
                     <Button variant="info" onClick={() => updateUser(user._id)}>
