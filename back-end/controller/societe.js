@@ -1,9 +1,5 @@
 const societe = require('../Models/societe');
-
 exports.addsociete =(req,res) =>{
-
-  
-    
     const newSociete = new societe({
         nom:req.body.nomS,
         adress:req.body.adressS,
@@ -74,4 +70,4 @@ exports.getSocieteNom =(req,res) =>{
   .catch((error) => {
     res.status(400).json(error);
   });
-}
+};

@@ -17,24 +17,25 @@ exports.registre =(req,res) =>{
     }
 
     
-bcrypt.hash(password,10).then(async (hash)=>{
+bcrypt.hash(password,10)
+.then(async (hash)=>{
 
+  try {
+    const newUser = await user.create({
+      password: hash,
+      Email,
+      Nom,
+    });
 
-        await user.create({
-            password:hash,
-             Email,
-              Nom,
-         })
-         .then((user) =>{
-            const token = GenToken(user);
-            res.status(200).json({token});
-            console.log(token);
-          })
-         .catch((error) =>
-         res.status(400).json({error})
-       );
-        }
-)
+    const token = GenToken(newUser);
+    return res.status(200).json({ token });
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
+})
+.catch((error) => {
+  return res.status(500).json({ error: "An error occurred" });
+});
 };
 
 exports.login = async (req, res) => {
