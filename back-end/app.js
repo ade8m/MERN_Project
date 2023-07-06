@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const societeRoute = require('./Routes/societe');
 const voitureRoute = require('./Routes/voiture');
 const AuthRoute = require('./Routes/auth');
@@ -21,6 +22,15 @@ const connect = async () =>{
 // midellware
 app.use(bodyParser.json());
 app.use(express.json());
+app.use(
+    cors({
+      origin: 'http://localhost:3000', // Specify the origin URL of your frontend application
+      optionsSuccessStatus: 200, // Return 200 for preflight requests
+      credentials: true, // Enable CORS with credentials (e.g., cookies, authorization headers)
+    })
+  );
+  
+
 
 app.use("/societe",societeRoute);
 app.use("/voiture",voitureRoute);
