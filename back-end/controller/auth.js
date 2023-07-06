@@ -30,7 +30,7 @@ bcrypt.hash(password,10)
     const token = GenToken(newUser);
     return res.status(200).json({ token });
   } catch (error) {
-    return res.status(400).json({ error });
+    return res.status(400).json({ message: 'Error occurred during registration', error })
   }
 })
 .catch((error) => {
