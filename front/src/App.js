@@ -27,7 +27,7 @@ const App = () => {
           <Route path="/societe" element={<SocieteComponent />} />
           <Route path="/voiture" element={<VoitureComponent />} />
           <Route path="/facture" element={<FactureComponent />} />
-          <Route path="/contrat" element={<ContratComponent />} />
+          <Route path="/contrat" element={<AdminPage />} />
         </Routes>
      </SideBarComponent>
    </BrowserRouter>
