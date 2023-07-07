@@ -1,43 +1,51 @@
 import React, { useState } from 'react';
-import { login } from '../service/authTokn';
 
 export const SignComponent = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+ 
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
 
-  function handlePasswordChange(e) {
+  const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-  }
+  };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-
-    // Login user
-    const loginUser = {
-      email: email,
-      password: password,
-    };
-    console.log('Login user:', loginUser); //
-
-    login(loginUser)
+ // Retrieve the token from localStorage
+ const token = localStorage.getItem('token');
+ 
+    fetch('http://localhost:3001/auth/login/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        Email: email,
+        password: password,
+      }),
+    })
+      .then((response) => response.json())
       .then((data) => {
-        console.log('Login response:', data);
         if (data.token) {
-          alert('Login successful');
+          localStorage.setItem('token', data.token);
+          console.log(localStorage);
+          return data;
         } else {
-          setErrorMessage('Login failed. Please check your credentials.');
+          throw new Error('Invalid token');
         }
       })
       .catch((error) => {
-        setErrorMessage('Login failed.');
         console.error('Error:', error);
+        throw error;
       });
-  };
+     
+  }
+  
 
   return (
     <div className="center-container">
@@ -70,8 +78,7 @@ export const SignComponent = () => {
           </div>
           <button type="submit" className="btn btn-primary" id="btn">
             Sign In
-          </button>
-          {errorMessage && <p>{errorMessage}</p>}
+          </button>       
         </div>
       </form>
     </div>
