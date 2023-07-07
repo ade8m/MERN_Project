@@ -11,6 +11,7 @@ export function login(user) {
     .then((data) => {
       if (data.token) {
         localStorage.setItem('token', data.token);
+        console.log(localStorage);
         return data;
       } else {
         throw new Error('Invalid token');
@@ -20,12 +21,11 @@ export function login(user) {
       console.error('Error:', error);
       throw error;
     });
+   
 }
-
 export const logout = () => {
   localStorage.removeItem('token');
 };
-
 export const isAuthenticated = () => {
   const token = localStorage.getItem('token');
   return token !== null;
