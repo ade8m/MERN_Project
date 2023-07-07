@@ -4,6 +4,6 @@ const UserControl = require('../controller/auth');
 const Verify = require('../middelware/Authentification');
 
 router.post('/add',UserControl.registre);
-router.post('/login',Verify.verifyToken,UserControl.login);
+router.post('/login',UserControl.login);
 
 module.exports = router;
