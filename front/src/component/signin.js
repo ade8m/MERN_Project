@@ -10,9 +10,9 @@ export const SignComponent = () => {
     setEmail(e.target.value);
   };
 
-  const handlePasswordChange = (e) => {
+  function handlePasswordChange(e) {
     setPassword(e.target.value);
-  };
+  }
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -34,7 +34,7 @@ export const SignComponent = () => {
         }
       })
       .catch((error) => {
-        setErrorMessage('Login failed. Please check your credentials.');
+        setErrorMessage('Login failed.');
         console.error('Error:', error);
       });
   };

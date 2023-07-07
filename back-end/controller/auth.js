@@ -39,13 +39,11 @@ bcrypt.hash(password,10)
 };
 
 exports.login = async (req, res) => {
-
-  
   const { Email, password } = req.body;
- 
+
   if (!Email || !password) {
     return res.status(400).json({
-      message: "Name or password not provided",
+      message: "Email or password not provided",
     });
   }
 
@@ -63,7 +61,7 @@ exports.login = async (req, res) => {
 
     if (isPassword) {
       const token = jwt.sign({ userId: usr.id }, process.env.secret_key);
-      return res.status(200).json({ message: "Login successful!",token });
+      return res.status(200).json({ message: "Login successful!", token });
     } else {
       return res.status(400).json({ message: "Incorrect password" });
     }
@@ -74,5 +72,3 @@ exports.login = async (req, res) => {
     });
   }
 };
-
-  
