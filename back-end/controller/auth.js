@@ -3,40 +3,38 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 
+exports.registre = (req, res) => {
+  const { password, Email, Nom } = req.body;
 
-const GenToken = (user) =>{
-  const token = jwt.sign({ id: user.id, isAdmin: user.isAdmin }, process.env.secret_key);
-  return token;
-};
-
-exports.registre =(req,res) =>{
-
-    const {password,Email,Nom} = req.body;
-         if (password.length <6){
-        res.status(400).json({message:"Password less than 6 characters"})
-    }
-
-    
-bcrypt.hash(password,10)
-.then(async (hash)=>{
-
-  try {
-    const newUser = await user.create({
-      password: hash,
-      Email,
-      Nom,
-    });
-
-    const token = GenToken(newUser);
-    return res.status(200).json({ token });
-  } catch (error) {
-    return res.status(400).json({ message: 'Error occurred during registration', error })
+  if (password.length < 6) {
+    res.status(400).json({ message: "Password must be at least 6 characters" });
+    return;
   }
-})
-.catch((error) => {
-  return res.status(500).json({ error: "An error occurred" });
-});
+
+  bcrypt.hash(password, 10)
+    .then(async (hash) => {
+      try {
+        const newUser = await user.create({
+          password: hash,
+          Email,
+          Nom,
+        });
+
+        const token = jwt.sign({ userId: newUser.id }, process.env.secret_key);
+        // Store the token in the database
+        newUser.token = token;
+        await newUser.save();
+
+        return res.status(200).json({ token });
+      } catch (error) {
+        return res.status(400).json({ error });
+      }
+    })
+    .catch((error) => {
+      return res.status(500).json({ error: "An error occurred" });
+    });
 };
+
 
 exports.login = async (req, res) => {
   const { Email, password } = req.body;
