@@ -4,16 +4,17 @@ import React from 'react';
 export const FooterComponent =()=> {
     return (
 
-        <footer className="bg-dark text-white text-center py-3">
+        <footer className="bg-warning text-dark text-center py-3">
             <div className="container">
-                <div className="row">
-                    <div className="col-12 col-md-6">
+               
+                   
+                 <section className="mb-4">
+                 <div className="info">
                         <h4>Bus Software</h4>
                         <p>123 Main Street, City, Country</p>
                         <p>Phone: 123-456-7890</p>
                         <p>Email: info@company.com</p>
                     </div>
-                 <section className="mb-4">
 
                             <a
                                 className="btn text-white btn-floating m-1"
@@ -42,8 +43,6 @@ export const FooterComponent =()=> {
                             ><i className="fab fa-linkedin-in"></i></a>
 
                         </section>
-
-                    </div>
 
                     
         <div className="container">

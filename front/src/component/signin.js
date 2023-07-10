@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { showAlert } from '../service/alert';
 
-export const SignComponent = () => {
+export const SignComponent = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
  
@@ -35,6 +35,7 @@ export const SignComponent = () => {
         if (data.token) {
           localStorage.setItem('token', data.token);
           console.log(localStorage);
+          onLogin();
           return data;
         } else {
           showAlert('User not found,verify Email && pwd', 'error');

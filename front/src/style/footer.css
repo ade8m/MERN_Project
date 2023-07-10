@@ -1,11 +1,14 @@
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
 .container {
-  max-width: 600px; /* Adjust the width as per your requirement */
+  max-width: 700px; /* Adjust the width as per your requirement */
   margin: 0 auto; /* Centers the footer horizontally */
   padding: 20px; /* Adds some spacing around the footer content */
 }
-
+.mb-4{
+   display:inline-flex;
+   justify-content: right;
+}
 .footer-social-links {
   margin-top: 20px; /* Adjust the top margin as needed */
 }
