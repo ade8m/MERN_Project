@@ -4,7 +4,7 @@ import React from 'react';
 export const FooterComponent =()=> {
     return (
 
-        <footer className="bg-light py-2">
+        <footer className="bg-dark text-white text-center py-3">
             <div className="container">
                 <div className="row">
                     <div className="col-12 col-md-6">
@@ -45,10 +45,11 @@ export const FooterComponent =()=> {
 
                     </div>
 
-                    <div className="text-center p-3" style={{ backgroundColor: '#f7e5e5' }}>
-                        © 2023 Copyright: 
-                        <a className="text-dark" href="https://mdbootstrap.com/"> MDBootstrap.com</a>
-                    </div>
+                    
+        <div className="container">
+          <p>© 2023 Rent Car. All rights reserved.</p>
+        </div>
+   
                 </div>
      
         </footer>
