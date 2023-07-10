@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { showAlert } from '../service/alert';
 
 export const SignComponent = () => {
   const [email, setEmail] = useState('');
@@ -36,7 +37,7 @@ export const SignComponent = () => {
           console.log(localStorage);
           return data;
         } else {
-          throw new Error('Invalid token');
+          showAlert('User not found,verify Email && pwd', 'error');
         }
       })
       .catch((error) => {
@@ -80,6 +81,8 @@ export const SignComponent = () => {
             Sign In
           </button>       
         </div>
+        {/* Alert */}
+      <div id="alert" className="alert" style={{ display: 'none' }}></div>
       </form>
     </div>
   );
