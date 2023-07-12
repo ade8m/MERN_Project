@@ -1,24 +1,23 @@
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
 .container {
-  max-width: 700px; /* Adjust the width as per your requirement */
-  margin: 0 auto; /* Centers the footer horizontally */
-  padding: 20px; /* Adds some spacing around the footer content */
+  max-width: 700px;
+  margin: 0 auto; 
+    padding: 20px; 
 }
 .mb-4{
-   display:inline-flex;
-   justify-content: right;
+   display:list-item;
+   justify-content:space-between;
 }
 .footer-social-links {
-  margin-top: 20px; /* Adjust the top margin as needed */
+  margin-top: 20px;
 }
-
 .footer-social-links a {
   color: white;
   font-size: 18px;
-  margin-right: 10px; /* Adds spacing between social icons */
+  margin-right: 10px;
 }
 
 .footer-social-links a:hover {
-  opacity: 0.8; /* Adds hover effect to social icons */
+  opacity: 0.8; 
 }
