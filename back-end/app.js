@@ -32,7 +32,7 @@ app.use(
   
 
 
-app.use("/societe",societeRoute);
+ 
 app.use("/voiture",voitureRoute);
 app.use("/auth",AuthRoute);
 app.use("/api",userRoute);

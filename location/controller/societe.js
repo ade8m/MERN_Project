@@ -1,75 +1,42 @@
 const mongoose = require('mongoose');
+const Company = require('../models/location');
+const Admin = require('../models/admin');
 
-exports.createSociete = async (req, res) => {
+exports.createCompany = async (req, res) => {
   try {
-    const mainDb = mongoose.connection.useDb('Project');
+    const { name, address, adminUsername, adminPassword } = req.body;
+    const databaseName = `${name.toLowerCase().replace(/\s/g, '_')}`;
+    const companyDb = mongoose.createConnection(process.env.MONGO);
 
-    // Get the company name from the request body
-    const companyName = req.body.nom.toLowerCase(); // Use lowercase for database name (e.g., "sts" instead of "sts")
-
-    // Create a new company database within the main database
-    const companyDb = mainDb.useDb(companyName);
-
-    // Create a new company collection inside the company's database
-    const Company = companyDb.model('Company', {
-      nom: { type: String, unique: true },
-      address: { type: String },
-      Email: { type: String, unique: true },
-      password: { type: String },
+    
+    const CompanyModel = companyDb.model('Company', Company.schema);
+    const AdminModel = companyDb.model('Admin', Admin.schema);
+   
+    // Create a new company
+    const company = new CompanyModel({
+      name,
+      address,
+      databaseName,
+    });
+   
+    // Save the company to the main database
+    await company.save(); 
+    // Create a new admin
+    const admin = new AdminModel({
+      username: adminUsername,
+      password: adminPassword,
+      company: company._id,
     });
 
-    // Create a new company document
-    const newSociete = new Company({
-      nom: req.body.nom,
-      address: req.body.address,
-      Email: req.body.email,
-      password: req.body.password,
-    });
+    // Save the admin to the company-specific database
+    await admin.save();
+    
+    // Associate the admin with the company
+    company.admins.push(admin._id);
+    await company.save();
 
-    await newSociete.save();
-
-    res.status(200).json(newSociete);
-    console.log('Societe created!');
+    res.status(200).json({ message: 'Company created successfully' });
   } catch (error) {
-    res.status(400).json(error);
+    res.status(400).json({ error: error.message });
   }
 };
-exports.login = async (req,res) =>{
-
-        try {
-          const mainDb = mongoose.connection.useDb('Project');
-      
-          // Get the entered company name, email, and password from the request body
-          const { companyName, email, password } = req.body;
-      
-          // Find the company in the main database
-          const Company = mainDb.model('Company', {
-            nom: { type: String, unique: true },
-            address: { type: String },
-            Email: { type: String, unique: true },
-            password: { type: String },
-          });
-      
-          const company = await Company.findOne({ nom: companyName.toLowerCase() });
-      
-          if (!company) {
-            return res.status(404).json({ message: 'Company not found' });
-          }
-      
-          // Verify the email and password
-          if (company.Email === email && company.password === password) {
-            // Grant access to the company's database
-            const companyDbName = companyName.toLowerCase();
-            const companyDb = mainDb.useDb(companyDbName);
-      
-            // Additional logic for granting access to the company's database
-      
-            return res.status(200).json({ message: 'Login successful' });
-          }
-      
-          return res.status(401).json({ message: 'Invalid email or password' });
-        } catch (error) {
-          return res.status(500).json({ message: 'Internal server error' });
-        }    
-
-}
