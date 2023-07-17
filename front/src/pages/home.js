@@ -1,25 +1,27 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import { Switch } from 'react-router';
 
-export const Home = () => {
+import { SideBarC } from '../component/sidebar2.js';
+import { SocieteComponent } from '../pages/societe';
+import { VoitureComponent } from '../pages/voiture';
+import { FactureComponent } from '../pages/facture';
+
+export const HomePage = () => {
   return (
-    <div>
-      
-
-      {/* Main content */}
-      <div className="container-fluid bg-image" style={{ backgroundImage: 'url(path/to/your/image.jpg)' }}>
-        <div className="row">
-          <div className="col-md-12 text-center">
-            <h1>Welcome to Rent Car</h1>
-            <p>Rent your dream car today</p>
-            <Link className="btn btn-primary" to="/cars">View Cars</Link>
-          </div>
+    <div className="full_container">
+      <div className="inner_container">
+        <SideBarC />
+        <div id="content">
+          <Switch>
+            <Route path="/societe" component={SocieteComponent} />
+            <Route path="/voiture" component={VoitureComponent} />
+            <Route path="/facrure" component={FactureComponent} />
+            {/* Add additional routes for other components */}
+          </Switch>
         </div>
       </div>
-
-      
     </div>
   );
 };
-
-export default Home;
+export default HomePage;
