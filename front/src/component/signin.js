@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { showAlert } from '../service/alert';
 
+
 export const SignComponent = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -50,41 +51,43 @@ export const SignComponent = ({ onLogin }) => {
   
 
   return (
-    <div className="center-container">
-      <form className="Auth-form" onSubmit={handleFormSubmit}>
-        <div className="Auth-form-content">
-          <h3 className="Auth-form-title">Sign In</h3>
-          <div className="form-group mt-3">
-            <label>Email</label>
-            <input
-              type="email"
-              id="email"
-              className="form-control mt-1"
-              placeholder="Enter your email"
-              value={email}
-              onChange={handleEmailChange}
-              required
-            />
-          </div>
-          <div className="form-group mt-3">
-            <label>Password</label>
-            <input
-              type="password"
-              id="password"
-              className="form-control mt-1"
-              placeholder="Enter your password"
-              value={password}
-              onChange={handlePasswordChange}
-              required
-            />
-          </div>
-          <button type="submit" className="btn btn-primary" id="btn">
-            Sign In
-          </button>       
-        </div>
-        {/* Alert */}
-      <div id="alert" className="alert" style={{ display: 'none' }}></div>
-      </form>
-    </div>
-  );
+   <div className="full_container">
+         <div className="container">
+            <div className="center verticle_center full_height">
+               <div className="login_section" style={{ marginTop: '50px' }}>
+                  <div className="logo_login">
+                     <div className="center">
+                        <img width="210" src="images/login.jpeg" alt="#" />
+                     </div>
+                  </div>
+                  <div className="login_form">
+                     <form>
+                        <fieldset>
+                           <div className="field">
+                              <label className="label_field">Email Address</label>
+                              <input type="email" name="email" placeholder="E-mail" />
+                           </div>
+                           <div className="field">
+                              <label className="label_field">Password</label>
+                              <input type="password" name="password" placeholder="Password" />
+                           </div>
+                           <div className="field">
+                              <label className="label_field hidden">hidden label</label>
+                              <label className="form-check-label">
+                                 <input type="checkbox" className="form-check-input" /> Remember Me
+                              </label>
+                              <a className="forgot" href="">Forgotten Password?</a>
+                           </div>
+                           <div className="field margin_0">
+                              <label className="label_field hidden">hidden label</label>
+                              <button className="main_bt">Sign In</button>
+                           </div>
+                        </fieldset>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   );
 };
