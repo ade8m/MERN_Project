@@ -1,23 +1,19 @@
-@import '@fortawesome/fontawesome-free/css/all.min.css';
 
-.container {
-  max-width: 700px;
-  margin: 0 auto; 
-    padding: 20px; 
-}
-.mb-4{
-   display:list-item;
-   justify-content:space-between;
-}
-.footer-social-links {
-  margin-top: 20px;
-}
-.footer-social-links a {
-  color: white;
-  font-size: 18px;
-  margin-right: 10px;
+.footer {
+  min-height: 65px;
+  background: #fff;
+  margin-top: 30px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+  width: 100%;
 }
 
-.footer-social-links a:hover {
-  opacity: 0.8; 
+.footer p {
+  margin: 0;
+  line-height: normal;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 300;
+  color: #214162;
+  padding: 25px 15px;
 }
