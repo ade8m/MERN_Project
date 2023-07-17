@@ -3,30 +3,59 @@ import { Link } from 'react-router-dom';
 
 export const NavComponent = () => {
   return (
-    <div>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div className="container">
-          <Link className="navbar-brand" to="/">Rent Car</Link>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link className="nav-link" to="/login">Login</Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </div>
+    <div className="topbar">
+   <nav className="navbar navbar-expand-lg navbar-light">
+      <div className="full">
+         <button type="button" id="sidebarCollapse" className="sidebar_toggle">
+            <i className="fa fa-bars"></i>
+         </button>
+         <div className="logo_section">
+            <a href="index.html">
+               <img className="img-responsive" src="images/logo/logo.png" alt="#" />
+            </a>
+         </div>
+         <div className="right_topbar">
+            <div className="icon_info">
+               <ul>
+                  <li>
+                     <a href="#">
+                        <i className="fa fa-bell-o"></i>
+                        <span className="badge">2</span>
+                     </a>
+                  </li>
+                  <li>
+                     <a href="#">
+                        <i className="fa fa-question-circle"></i>
+                     </a>
+                  </li>
+                  <li>
+                     <a href="#">
+                        <i className="fa fa-envelope-o"></i>
+                        <span className="badge">3</span>
+                     </a>
+                  </li>
+               </ul>
+               <ul className="user_profile_dd">
+                  <li>
+                     <a className="dropdown-toggle" data-toggle="dropdown">
+                        <img className="img-responsive rounded-circle" src="images/layout_img/user_img.jpg" alt="#" />
+                        <span className="name_user">John David</span>
+                     </a>
+                     <div className="dropdown-menu">
+                        <a className="dropdown-item" href="profile.html">My Profile</a>
+                        <a className="dropdown-item" href="settings.html">Settings</a>
+                        <a className="dropdown-item" href="help.html">Help</a>
+                        <a className="dropdown-item" href="#">
+                           <span>Log Out</span> <i className="fa fa-sign-out"></i>
+                        </a>
+                     </div>
+                  </li>
+               </ul>
+            </div>
+         </div>
+      </div>
+   </nav>
+</div>
+
   );
 };
