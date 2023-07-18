@@ -4,6 +4,7 @@ import { Link} from 'react-router-dom';
 
  export const SideBarC = () => {
 
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleSidebarToggle = () => {
@@ -47,7 +48,7 @@ import { Link} from 'react-router-dom';
       <div className="sidebar_blog_1">
         <div className="sidebar-header">
           <div className="logo_section">
-            <img className="logo_icon img-responsive" src="images/logo/logo_icon.png" alt="#" />
+            <img className="logo_icon img-responsive"  src="style/login" alt="#"/>
           </div>
           <button type="button" id="sidebarCollapse" className="sidebar_toggle"  onClick={handleSidebarToggle}>
             <i className="fa fa-bars"></i>
@@ -65,7 +66,7 @@ import { Link} from 'react-router-dom';
         </div>
       </div>
       <div className="sidebar_blog_2">
-        <h4>General</h4>
+        <h4>Plateform de Location </h4>
         <ul className="list-unstyled components">
           <li className="active">
             <a href="#dashboard" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle"><i className="fa fa-dashboard yellow_color"></i> <span>Paramétre</span></a>
@@ -78,14 +79,14 @@ import { Link} from 'react-router-dom';
               </li>
             </ul>
           </li>
-          <li>  <Link to="/societe">
+          <li>  <Link to="/societe" >
             <i className="fa fa-clock-o orange_color"></i> <span>Société</span>
                 </Link></li>
           <li>
             <a href="#element" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle"><i className="fa fa-diamond purple_color"></i> <span>Elements</span></a>
             <ul className="collapse list-unstyled" id="element">
               <li>  <Link to="/voiture"><span>voiture</span></Link></li>
-              <li><Link to="/Facture"><span>Facture</span></Link></li>
+              <li><Link to="/facture" ><span>Facture</span></Link></li>
               <li><Link to="/Contrat"><span>list</span></Link></li>
             </ul>
           </li>

@@ -109,7 +109,7 @@ if (isEmpty) {
             <input type="number" className="form-control" id="assu"   onChange={handleInputChange}/>
           </div>
           <div className="mb-3">
-            <label htmlFor="numFacture" className="form-label">Numéro Vigniyet</label>
+            <label htmlFor="numFacture" className="form-label">Numéro Vignette</label>
             <input type="number" className="form-control" id="vigni"  onChange={handleInputChange}/>
           </div>
           <div className="mb-3">
@@ -119,7 +119,7 @@ if (isEmpty) {
         </div>
         <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-primary  custom-button"
             onClick={handleAddVoiture}
             
           >

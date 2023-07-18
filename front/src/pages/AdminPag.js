@@ -71,7 +71,7 @@ export function AdminPage() {
     <h1 className="text-center mt-3">Admin Page</h1>
     <Row className="justify-content-center">
       <Col lg={6} md={6}>
-      <h3 className="text-center mt-3">Add New User</h3>
+      <h3 className="text-center mt-3">Creé Nouveau Societe</h3>
          {/* Alert */}
          <div id="alert" className="alert" style={{ display: 'none' }}></div>
       
@@ -108,16 +108,16 @@ export function AdminPage() {
 
           <div className="d-flex justify-content-first">
             <Button variant="primary" type="submit">
-              Register
+              Creé
             </Button>
           </div>
         </Form>
       </Col>
       <Col lg={6} md={6}>
-        <h3 className="text-center mt-3">Configuration des comptes des utilisateurs:</h3>
+        <h3 className="text-center mt-3">Configuration des comptes des Societés:</h3>
         <div className="d-flex justify-content-center">
           <Button variant="success" className="mb-3" onClick={fetchUsers}>
-            Get All Users
+            Afficher tous les societés:
           </Button>
         </div>
 

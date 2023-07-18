@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { showAlert } from '../service/alert';
+import { useNavigate } from 'react-router-dom';
 
 
-export const SignComponent = ({ onLogin }) => {
+export const SignComponent = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
  
 
   const handleEmailChange = (e) => {
@@ -17,8 +19,9 @@ export const SignComponent = ({ onLogin }) => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    navigate('/societe');
  // Retrieve the token from localStorage
- const token = localStorage.getItem('token');
+ /*const token = localStorage.getItem('token');
  
     fetch('http://localhost:3001/auth/login/', {
       method: 'POST',
@@ -45,7 +48,7 @@ export const SignComponent = ({ onLogin }) => {
       .catch((error) => {
         console.error('Error:', error);
         throw error;
-      });
+      });*/
      
   }
   
@@ -65,11 +68,11 @@ export const SignComponent = ({ onLogin }) => {
                         <fieldset>
                            <div className="field">
                               <label className="label_field">Email Address</label>
-                              <input type="email" name="email" placeholder="E-mail" />
+                              <input type="email" name="email" placeholder="E-mail" onClick={handleEmailChange}/>
                            </div>
                            <div className="field">
                               <label className="label_field">Password</label>
-                              <input type="password" name="password" placeholder="Password" />
+                              <input type="password" name="password" placeholder="Password" onClick={handlePasswordChange}/>
                            </div>
                            <div className="field">
                               <label className="label_field hidden">hidden label</label>
@@ -80,7 +83,7 @@ export const SignComponent = ({ onLogin }) => {
                            </div>
                            <div className="field margin_0">
                               <label className="label_field hidden">hidden label</label>
-                              <button className="main_bt">Sign In</button>
+                              <button className="main_bt" onClick={handleFormSubmit}>Sign In</button>
                            </div>
                         </fieldset>
                      </form>
@@ -91,3 +94,4 @@ export const SignComponent = ({ onLogin }) => {
       </div>
    );
 };
+export default SignComponent;

@@ -229,7 +229,7 @@ export function SocieteComponent() {
         ) : (
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-primary   custom-button"
             onClick={handleAddSociete}
             style={{ margin: '5px' }}
           >
@@ -267,7 +267,7 @@ export function SocieteComponent() {
               <td>
                 <button
                   type="button"
-                  className="btn btn-sm btn-primary"
+                  className="btn btn-sm btn-primary  custom-button"
                   onClick={() => handleEditSociete(societe)}
                 >
                   Edit
