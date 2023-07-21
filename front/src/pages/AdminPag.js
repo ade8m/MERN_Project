@@ -52,13 +52,13 @@ export function AdminPage() {
 
   const registerUser = async (e) => {
     e.preventDefault();
-    if (!newUser.Nom || !newUser.Email || !newUser.password) {
+    if  (!newUser.name || !newUser.address || !newUser.adminUsername || !newUser.adminPassword) {
       showAlert('One or more required fields are missing', 'error');
       return;
     };
     try {
-      await axios.post('http://localhost:3001/auth/add', newUser);
-      setNewUser({ Nom: '', Email: '', password: '' });
+      await axios.post('http://localhost:2000/societe', newUser);
+      setNewUser({ name: '', address: '', adminUsername: '', adminPassword: '' });
       fetchUsers();
     } catch (error) {
       console.error(error);
@@ -75,36 +75,46 @@ export function AdminPage() {
          {/* Alert */}
          <div id="alert" className="alert" style={{ display: 'none' }}></div>
       
-        <Form onSubmit={registerUser}>
-          <Form.Group controlId="formNom">
-            <Form.Label>Nom</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter Nom"
-              value={newUser.Nom}
-              onChange={(e) => setNewUser({ ...newUser, Nom: e.target.value })}
-            />
-          </Form.Group>
+         <Form onSubmit={registerUser}>
+      <Form.Group controlId="formName">
+        <Form.Label>Nom</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter Nom"
+          value={newUser.name}
+          onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+        />
+      </Form.Group>
 
-          <Form.Group controlId="formEmail">
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Enter Email"
-              value={newUser.Email}
-              onChange={(e) => setNewUser({ ...newUser, Email: e.target.value })}
-            />
-          </Form.Group>
+      <Form.Group controlId="formAddress">
+        <Form.Label>Address</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter Address"
+          value={newUser.address}
+          onChange={(e) => setNewUser({ ...newUser, address: e.target.value })}
+        />
+      </Form.Group>
 
-          <Form.Group controlId="formPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Enter Password"
-              value={newUser.password}
-              onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
-            />
-          </Form.Group>
+      <Form.Group controlId="formAdminUsername">
+        <Form.Label>Admin Username</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter Admin Username"
+          value={newUser.adminUsername}
+          onChange={(e) => setNewUser({ ...newUser, adminUsername: e.target.value })}
+        />
+      </Form.Group>
+
+      <Form.Group controlId="formAdminPassword">
+        <Form.Label>Admin Password</Form.Label>
+        <Form.Control
+          type="password"
+          placeholder="Enter Admin Password"
+          value={newUser.adminPassword}
+          onChange={(e) => setNewUser({ ...newUser, adminPassword: e.target.value })}
+        />
+      </Form.Group>
 
           <div className="d-flex justify-content-first">
             <Button variant="primary" type="submit">
