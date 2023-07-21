@@ -1,44 +1,49 @@
 const mongoose = require('mongoose');
-const Company = require('../models/location');
-const Admin = require('../models/admin');
+
+const Admin = require('../models/admin');// Import the Company model
+
 
 exports.createCompany = async (req, res) => {
   try {
     const { name, address, adminUsername, adminPassword } = req.body;
 
-    // Generate a unique database name for the company
+    // Generate a unique database name for the company and convert to lowercase
     const databaseName = name.toLowerCase();
 
-    // Create a connection to the company-specific database
-    const companyDb = mongoose.createConnection(`mongodb+srv://adem:adem@atlascluster.8tnxd7f.mongodb.net/${databaseName}`);
+  
 
-    // Define the Company and Admin models for the company-specific database
-    const CompanyModel = companyDb.model('Company', Company.schema);
-    const AdminModel = companyDb.model('Admin', Admin.schema);
+    // Create a new collection with the name of the company and store its information
+    const companyCollectionName = databaseName;
+    const companySchema = new mongoose.Schema({
+      
+       name: { type: String },
+      address: { type: String },
+   admins: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Admin' }],
+      databaseName: { type: String },
+    });
 
-    // Create a new company
-    const company = new CompanyModel({
+    // Create the company-specific collection in the main database
+    const CompanyModel = mongoose.model(
+      companyCollectionName,
+      companySchema
+    );
+
+    // Save the company's information to the company-specific collection
+    const newCompanyData = new CompanyModel({
       name,
       address,
+      admins: [], // Add admins associated with the company if needed
       databaseName,
     });
+    await newCompanyData.save();
 
-    // Save the company to the main database
-    await company.save();
-
-    // Create a new admin
-    const admin = new AdminModel({
+    // Create a new admin for the company
+    const admin = new Admin({
       username: adminUsername,
       password: adminPassword,
-      company: company._id,
     });
 
-    // Save the admin to the company-specific database
     await admin.save();
-
-    // Associate the admin with the company
-    company.admins.push(admin._id);
-    await company.save();
 
     res.status(200).json({ message: 'Company created successfully' });
   } catch (error) {
