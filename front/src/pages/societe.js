@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { showAlert } from '../service/alert';
 
+
 export function SocieteComponent() {
   const [societeData, setSocieteData] = useState({});
   const [existingNoms, setExistingNoms] = useState([]);
@@ -278,7 +279,7 @@ export function SocieteComponent() {
           })}
         </tbody>
       </table>
-    </div>
+      </div>
   );
 }
 

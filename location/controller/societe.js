@@ -1,24 +1,21 @@
 const mongoose = require('mongoose');
 
-const Admin = require('../models/admin');// Import the Company model
-
+const Admin = require('../models/admin');
+const company = require('../models/location');
 
 exports.createCompany = async (req, res) => {
   try {
     const { name, address, adminUsername, adminPassword } = req.body;
 
-    // Generate a unique database name for the company and convert to lowercase
-    const databaseName = name.toLowerCase();
+    
 
   
-
-    // Create a new collection with the name of the company and store its information
-    const companyCollectionName = databaseName;
+    const companyCollectionName = name.toLowerCase();
     const companySchema = new mongoose.Schema({
       
-       name: { type: String },
+      name: { type: String },
       address: { type: String },
-   admins: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Admin' }],
+      admins: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Admin' }],
       databaseName: { type: String },
     });
 
@@ -33,7 +30,7 @@ exports.createCompany = async (req, res) => {
       name,
       address,
       admins: [], // Add admins associated with the company if needed
-      databaseName,
+      
     });
     await newCompanyData.save();
 
@@ -41,12 +38,43 @@ exports.createCompany = async (req, res) => {
     const admin = new Admin({
       username: adminUsername,
       password: adminPassword,
+      companyId: newCompanyData._id,
     });
 
     await admin.save();
+    newCompanyData.admins.push(admin._id);
+    await newCompanyData.save();
 
     res.status(200).json({ message: 'Company created successfully' });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
+
+exports.login = async (req,res)=>{
+   try {
+    const { username, password } = req.body;
+
+
+    const admin = await Admin.findOne({ username, password, companyId: { $exists: true } });
+
+    if (!admin) {
+     
+      return res.status(401).json({ error: 'Company not found or invalid credentials' });
+    }
+    
+    // Use the dynamically created model to find the company in its collection
+    const CompanyModel = mongoose.model(admin.companyId.toLowerCase(), companySchema);
+    const company = await CompanyModel.findOne({ _id: admin.companyId });
+
+    if (!company) {
+    return res.status(404).json({ error: 'Company not found' });
+  }
+
+  res.status(200).json({ message: 'Login successful', company: company.name });
+
+   } catch (error) {
+    res.status(400).json({ error: error.message });
+   }
+};
+
