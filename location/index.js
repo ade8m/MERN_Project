@@ -24,6 +24,7 @@ app.use("/societe",societeR);
 
 
 app.listen(2000,()=>{
-    console.log('server running in 2000')
+    
+    console.log('server running in 2000');
     connect()
 });
