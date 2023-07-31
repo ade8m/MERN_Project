@@ -29,22 +29,13 @@ app.use(
       credentials: true, // Enable CORS with credentials (e.g., cookies, authorization headers)
     })
   );
-  
 
-
- 
 app.use("/voiture",voitureRoute);
 app.use("/auth",AuthRoute);
 app.use("/api",userRoute);
 
 
-
-
-
-
-
 //Create Server
-
 app.listen(3001,()=>{ 
     connect();
     console.log('Server is running on port 3001');

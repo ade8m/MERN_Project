@@ -1,26 +1,4 @@
-const societe = require('../Models/societe');
-exports.addsociete =(req,res) =>{
-    const newSociete = new societe({
-        nom:req.body.nomS,
-        adress:req.body.adressS,
-        Ncontrat:req.body.numcontrat,
-        Nfacture:req.body.numfacture,
-        TVA:req.body.tva,
-        Description:req.body.description,
-        Anneé:req.body.annee
-
-      });
-     
-      newSociete.save()
-      .then(()=>{
-        res.status(200).json(newSociete);
-        console.log("societe created!!");
-      })
-      .catch((error) =>{
-        res.status(400).json(error)
-      });
-    
-};
+const societe = require('../Models/location');
 
 
 exports.UpdateSociete = (req, res) => {
@@ -39,6 +17,7 @@ exports.UpdateSociete = (req, res) => {
 };
 
 exports.DeleteSociete =(req,res) =>{
+  
   societe.deleteOne({_id: req.params.id})
   .then((result) =>{
       res.status(200).json(result);

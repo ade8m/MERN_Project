@@ -1,72 +1,82 @@
-const user = require('../Models/user');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
+
+const Admin = require('../Models/admin');
+const Company = require ('../Models/location');
+const companySchema = require('../Models/companySchema');
 
 
-exports.registre = (req, res) => {
-  const { password, Email, Nom } = req.body;
 
-  if (password.length < 6) {
-    res.status(400).json({ message: "Password must be at least 6 characters" });
-    return;
-  }
+exports.register = async (req, res) => {
+  try {
+    const { name, address, adminUsername, adminPassword } = req.body;
 
-  bcrypt.hash(password, 10)
-    .then(async (hash) => {
-      try {
-        const newUser = await user.create({
-          password: hash,
-          Email,
-          Nom,
-        });
+    const companyCollectionName = name.toLowerCase();
 
-        const token = jwt.sign({ userId: newUser.id }, process.env.secret_key);
-        // Store the token in the database
-        newUser.token = token;
-        await newUser.save();
+    // Create the company-specific collection in the main database
+    const CompanyModel = mongoose.model(
+      companyCollectionName,
+      companySchema
+    );
 
-        return res.status(200).json({ token });
-      } catch (error) {
-        return res.status(400).json({ error });
-      }
-    })
-    .catch((error) => {
-      return res.status(500).json({ error: "An error occurred" });
+    // Save the company's information to the company-specific collection
+    const newCompanyData = new CompanyModel({
+      name,
+      address,
+      admins: [], 
     });
+    await newCompanyData.save();
+
+    // Create a new admin for the company
+    const admin = new Admin({
+      username: adminUsername,
+      password: adminPassword,
+      companyName: name, 
+    });
+    await admin.save();
+    // Associate the admin with the new company
+    if (!newCompanyData.admins) {
+      newCompanyData.admins = [];
+    }
+
+    newCompanyData.admins.push(admin._id);
+    await newCompanyData.save();
+
+  
+
+    res.status(200).json({ message: 'Company created successfully' });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
-
 exports.login = async (req, res) => {
-  const { Email, password } = req.body;
-
-  if (!Email || !password) {
-    return res.status(400).json({
-      message: "Email or password not provided",
-    });
-  }
-
   try {
-    const usr = await user.findOne({ Email });
+    const { username, password } = req.body;
 
-    if (!usr) {
-      return res.status(400).json({
-        message: "Login not successful",
-        error: "User not found",
-      });
+    // Find the admin based on the provided username and password
+    const admin = await Admin.findOne({ username, password });
+
+    if (!admin) {
+      return res.status(404).json({ error: 'Admin not found or invalid credentials' });
     }
 
-    const isPassword = await bcrypt.compare(password, usr.password);
+    // Retrieve the associated company name from the admin's companyName field
+    const requestedCompany = admin.companyName;
 
-    if (isPassword) {
-      const token = jwt.sign({ userId: usr.id }, process.env.secret_key);
-      return res.status(200).json({ message: "Login successful!", token });
-    } else {
-      return res.status(400).json({ message: "Incorrect password" });
+    // Use the requestedCompany directly to construct the collection name
+    const CompanyModel = mongoose.model(requestedCompany.toLowerCase(), companySchema);
+
+    // Find the company in its specific collection based on the requestedCompany name
+    const company = await CompanyModel.findOne({ name: requestedCompany });
+
+    if (!company) {
+      return res.status(404).json({ error: 'Company not found' });
     }
+
+    const companyFoundName = company.name;
+
+    res.status(200).json({ message: 'Login successful', company: companyFoundName });
   } catch (error) {
-    return res.status(500).json({
-      message: "An error occurred",
-      error: error.message,
-    });
+    res.status(400).json({ error: error.message });
   }
 };
