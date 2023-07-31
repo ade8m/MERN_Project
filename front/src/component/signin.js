@@ -19,42 +19,51 @@ export const SignComponent = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    navigate('/societe');
+    
  // Retrieve the token from localStorage
- /*const token = localStorage.getItem('token');
+ //const token = localStorage.getItem('token');
  
-    fetch('http://localhost:3001/auth/login/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        Email: email,
-        password: password,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.token) {
-          localStorage.setItem('token', data.token);
-          console.log(localStorage);
-          onLogin();
-          return data;
-        } else {
-          showAlert('User not found,verify Email && pwd', 'error');
-        }
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        throw error;
-      });*/
+ fetch('http://localhost:3001/auth/login', {
+   method: 'POST',
+   headers: {
+     'Content-Type': 'application/json',
+   },
+   body: JSON.stringify({
+     username: email, 
+     password: password,
+   }),
+ })
+   .then((response) => {
+     if (!response.ok) {
+      
+       throw new Error('Invalid credentials'); 
+      
+     }
+     return response.json();
+   })
+   .then((data) => {
+    
+     const companyName = data.company;
+     localStorage.setItem('company', companyName);
+
      
-  }
+     navigate('/societe');
+   })
+   .catch((error) => {
+     console.error('Error:', error);
+     // Handle the login error here
+     showAlert(error.message, 'error'); 
+   });
+};
+
+     
+
   
 
   return (
    <div className="full_container">
+       {/* Alert */}
+       <div id="alert" className="alert" style={{ display: 'none' }}></div>
          <div className="container">
             <div className="center verticle_center full_height">
                <div className="login_section" style={{ marginTop: '50px' }}>
@@ -67,8 +76,8 @@ export const SignComponent = () => {
                      <form>
                         <fieldset>
                            <div className="field">
-                              <label className="label_field">Email Address</label>
-                              <input type="email" name="email" placeholder="E-mail" onClick={handleEmailChange}/>
+                              <label className="label_field">Username</label>
+                              <input type="name" name="name" placeholder="Username" onClick={handleEmailChange}/>
                            </div>
                            <div className="field">
                               <label className="label_field">Password</label>
