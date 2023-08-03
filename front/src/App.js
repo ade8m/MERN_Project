@@ -22,8 +22,10 @@ import { SocieteComponent } from './pages/societe';
 import { VoitureComponent } from './pages/voiture';
 import { FactureComponent } from './pages/facture';
 import { ContratComponent } from './pages/contrat';
+
 import {AdminPage} from './pages/AdminPag';
 import { SignComponent } from './component/signin';
+import {UpdateSociete} from './pages/updateSociete';
 
 const App = () => {
   
@@ -34,7 +36,7 @@ const App = () => {
 
     <Routes>
       <Route path="/" element={<SignComponent/>}/>
-      
+      <Route path="/societe/update" element={<UpdateSociete/>}/>
       
     </Routes>
     <div className="full_container">
@@ -46,8 +48,8 @@ const App = () => {
           <Route path="/voiture" element={<VoitureComponent/>}/>
           <Route path="/societe" element={<SocieteComponent/>}/>
           <Route path="/facture" element={<FactureComponent/>}/>
-          <Route path="/admin" element={<AdminPage/>}/>
-          {/* Add additional routes for other components */}
+         
+          
         </Routes>
       </div>
     </div>
