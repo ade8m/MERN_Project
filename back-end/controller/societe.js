@@ -1,4 +1,35 @@
-const societe = require('../Models/location');
+const societe = require('../Models/societe');
+
+
+exports.addOtherProperties = async (req, res) => {
+
+  const { id } = req.params;
+  const { Ncontrat, Nfacture, TVA, Description, Anneé } = req.body;
+
+  try {
+   
+    const societ = await societe.findById(id);
+
+    if (!societ) {
+      return res.status(404).json({ error: 'Societe not found' });
+    }
+
+   
+    societ.Ncontrat = Ncontrat;
+    societ.Nfacture = Nfacture;
+    societ.TVA = TVA;
+    societ.Description = Description;
+    societ.Anneé = Anneé;
+
+    
+    await societ.save();
+
+    res.status(200).json({ message: 'Other properties added to societe successfully' });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 
 
 exports.UpdateSociete = (req, res) => {
