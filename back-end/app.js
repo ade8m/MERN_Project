@@ -33,6 +33,7 @@ app.use(
 app.use("/voiture",voitureRoute);
 app.use("/auth",AuthRoute);
 app.use("/api",userRoute);
+app.use("/societe",societeRoute);
 
 
 //Create Server
