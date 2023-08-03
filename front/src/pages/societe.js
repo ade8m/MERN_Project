@@ -1,59 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { showAlert } from '../service/alert';
-import {UpdateSociete} from  './updateSociete';
+import { useParams } from 'react-router-dom';
+
 
 
 export function SocieteComponent() {
   const [societeData, setSocieteData] = useState({});
-  const [existingNoms, setExistingNoms] = useState([]);
-  const [id, setId] = useState('');
-  const [isEditing, setIsEditing] = useState(false);
-  const [fetchedSocietes, setFetchedSocietes] = useState([]);
+  const { societeName } = useParams(); 
 
-   // State to control whether to show the update form
-   const [showUpdateForm, setShowUpdateForm] = useState(false);
-   // Function to toggle the update form display
-  const toggleUpdateForm = () => {
-    setShowUpdateForm(!showUpdateForm);
-  };
 
   useEffect(() => {
-    fetchSocietes();
+    // Retrieve Societe data from local storage
+    const storedSocieteData = JSON.parse(localStorage.getItem('societeData'));
+    setSocieteData(storedSocieteData);
   }, []);
-
-  const fetchSocietes = () => {
-    fetch('http://localhost:3001/societe/get')
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Societes retrieved:', data);
-        const nomSocietes = data.map((societe) => societe.nom);
-        setExistingNoms(nomSocietes);
-        setFetchedSocietes(data); 
-        
-        if (data.length > 0) {
-          setId(data[0]._id); 
-        }
-      })
-      .catch((error) => {
-        console.error('Error retrieving societes:', error);
-      });
-  };
 
   const handleInputChange = (event) => {
     const { id, value } = event.target;
     setSocieteData((prevData) => ({ ...prevData, [id]: value }));
   };
 
-  const handleEditSociete = (societe) => {
-    setSocieteData(societe);
-    setIsEditing(true);
-  };
-
   const handleAddSociete = () => {
     
     const requiredFields = [
-      'nomS',
-      'adressS',
+      
       'tva',
       'annee',
       'numcontrat',
@@ -68,7 +38,7 @@ export function SocieteComponent() {
       return;
     }
 
-    fetch('http://localhost:3001/societe/New', {
+    fetch('http://localhost:3001/societe/:id', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -84,45 +54,6 @@ export function SocieteComponent() {
       .catch((error) => {
         console.error('Error adding societe:', error);
         showAlert('Failed to add societe.', 'error');
-      });
-  };
-
-  const handleUpdateSociete = () => {
-    // Check if any required fields are empty
-    const requiredFields = [
-      'nomS',
-      'adressS',
-      'tva',
-      'annee',
-      'numcontrat',
-      'numfacture',
-      'description',
-    ];
-
-    const isEmpty = requiredFields.some((field) => !societeData[field]);
-
-    if (isEmpty) {
-      showAlert('One or more required fields are missing', 'error');
-      return;
-    }
-
-    fetch(`http://localhost:3001/societe/update/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(societeData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Societe updated:', data);
-        showAlert('Societe updated successfully!', 'success');
-        setIsEditing(false);
-        setSocieteData({});
-      })
-      .catch((error) => {
-        console.error('Error updating societe:', error);
-        showAlert('Failed to update societe.', 'error');
       });
   };
 
@@ -143,13 +74,9 @@ export function SocieteComponent() {
               id="nomS"
               value={societeData.nom}
               onChange={handleInputChange}
-              list="existingNoms"
+              
             />
-            <datalist id="existingNoms" style={{ color: '#d4edda' }}>
-              {existingNoms.map((nom) => (
-                <option key={nom} value={nom} />
-              ))}
-            </datalist>
+            
           </div>
           <div className="mb-3">
             <label htmlFor="adresse" className="form-label">
@@ -159,7 +86,7 @@ export function SocieteComponent() {
               type="text"
               className="form-control"
               id="adressS"
-              value={societeData.address}
+              value={societeData.adress}
               onChange={handleInputChange}
             />
           </div>
@@ -227,15 +154,7 @@ export function SocieteComponent() {
             ></textarea>
           </div>
         </div>
-        {isEditing ? (
-          <button
-            type="button"
-            className="btn btn-info"
-            onClick={handleUpdateSociete}
-          >
-            Update Societe
-          </button>
-        ) : (
+        
           <button
             type="button"
             className="btn btn-primary   custom-button"
@@ -244,49 +163,8 @@ export function SocieteComponent() {
           >
             Ajouter Nouveau Societe
           </button>
-        )}
-      </div>
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th>Nom Societe</th>
-            <th>Adresse</th>
-            <th>TVA</th>
-            <th>Année</th>
-            <th>Numéro Contrat</th>
-            <th>Numéro Facture</th>
-            <th>Description</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {/* Render the societe data in the table */}
-          {existingNoms.map((nom) => {
-             const societe = fetchedSocietes.find((societe) => societe.nom === nom);
-             return (
-          
-            <tr key={nom}>
-              <td>{nom}</td>
-              <td>{societeData.address}</td>
-              <td>{societeData.TVA}</td>
-              <td>{societeData.Anneé}</td>
-              <td>{societeData.Ncontrat}</td>
-              <td>{societeData.Nfacture}</td>
-              <td>{societeData.Description}</td>
-              <td>
-                <button
-                  type="button"
-                  className="btn btn-sm btn-primary  custom-button"
-                  onClick={() => handleEditSociete(societe)}
-                >
-                  Edit
-                </button>
-              </td>
-            </tr>
-             );
-          })}
-        </tbody>
-      </table>
+       
+      </div>  
       </div>
   );
 }

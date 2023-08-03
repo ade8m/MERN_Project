@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 export const SignComponent = () => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+  
 
   const navigate = useNavigate();
 
@@ -37,11 +38,12 @@ export const SignComponent = () => {
       })
       .then((data) => {
         // Save the token and company name to local storage
+        console.log('Login response data:', data);
         localStorage.setItem('token', data.token);
-        localStorage.setItem('company', data.societe.nom);
+        localStorage.setItem('societeData', JSON.stringify(data.societe));
 
         // Navigate to the /societe route
-        navigate('/societe');
+        navigate(`/societe/${data.societe.nom}`);
       })
       .catch((error) => {
         console.error('Error:', error);

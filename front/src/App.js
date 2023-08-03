@@ -46,7 +46,7 @@ const App = () => {
         
           <Routes>
           <Route path="/voiture" element={<VoitureComponent/>}/>
-          <Route path="/societe" element={<SocieteComponent/>}/>
+          <Route path="/societe/:societeName" element={<SocieteComponent/>}/>
           <Route path="/facture" element={<FactureComponent/>}/>
          
           

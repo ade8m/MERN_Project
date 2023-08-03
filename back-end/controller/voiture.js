@@ -16,9 +16,7 @@ exports.addVoiture = async (req, res) => {
       disponibilite:req.body.dispo,  
       color:req.body.couleur,
       model:req.body.model,
-    });
-
-    
+    });  
    newVoiture.save()
 
   .then(()=>{

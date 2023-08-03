@@ -37,13 +37,13 @@ exports.UpdateSociete = (req, res) => {
   const { nom, adress, Ncontrat, Nfacture, tva,Description,Anneé} = req.body;
 
   societe
-    .findByIdAndUpdate({ _id: id }, { nom, adress, Ncontrat, Nfacture,Description ,Anneé,TVA: tva })
+    .findByIdAndUpdate({ _id: id },{ nom, adress, Ncontrat, Nfacture,Description ,Anneé,TVA: tva })
     .then((result) => {
       res.status(200).json(result);
       console.log('Societe updated successfully' );
     })
     .catch((error) => {
-      res.status(400).json(error);
+    res.status(400).json(error);
     });
 };
 
