@@ -81,14 +81,17 @@ export const SideBarC = () => {
           <ul className="list-unstyled components">
             <li className="active">
               <a href="#dashboard" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">
-                <i className="fa fa-dashboard yellow_color"></i> <span>Paramétre</span>
+                <i className="fa fa-dashboard yellow_color"></i> <span>Société</span>
               </a>
               <ul className="collapse list-unstyled" id="dashboard">
                 <li>
-                  <a href="dashboard.html"> <span>Default Dashboard</span></a>
+                  <a href="dashboard.html"> <span>Ajouter Nouveau Societe</span></a>
                 </li>
                 <li>
-                  <a href="dashboard_2.html"> <span>Dashboard style 2</span></a>
+                  <a href="dashboard_2.html"> <span>Mise a jour</span></a>
+                </li>
+                <li>
+                  <a href="dashboard_2.html"> <span>Supprimer de Societé</span></a>
                 </li>
               </ul>
             </li>
