@@ -1,47 +1,31 @@
 const mongoose = require('mongoose');
-
+const jwt = require('jsonwebtoken');
 const Admin = require('../Models/admin');
-const Company = require ('../Models/location');
-const companySchema = require('../Models/companySchema');
-
-
+const Societe = require('../Models/societe');
 
 exports.register = async (req, res) => {
   try {
     const { name, address, adminUsername, adminPassword } = req.body;
 
-    const companyCollectionName = name.toLowerCase();
-
-    // Create the company-specific collection in the main database
-    const CompanyModel = mongoose.model(
-      companyCollectionName,
-      companySchema
-    );
-
-    // Save the company's information to the company-specific collection
-    const newCompanyData = new CompanyModel({
-      name,
-      address,
-      admins: [], 
-    });
-    await newCompanyData.save();
-
     // Create a new admin for the company
     const admin = new Admin({
       username: adminUsername,
       password: adminPassword,
-      companyName: name, 
+      companyName: name,
     });
+
+    // Save the admin to the database
     await admin.save();
-    // Associate the admin with the new company
-    if (!newCompanyData.admins) {
-      newCompanyData.admins = [];
-    }
 
-    newCompanyData.admins.push(admin._id);
-    await newCompanyData.save();
+    // Create a new societe with nom and address
+    const societe = new Societe({
+      nom: name,
+      adress: address,
+      admin: admin._id, // Associate the admin with the societe
+    });
 
-  
+    // Save the societe to the database
+    await societe.save();
 
     res.status(200).json({ message: 'Company created successfully' });
   } catch (error) {
@@ -53,29 +37,30 @@ exports.login = async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    // Find the admin based on the provided username and password
+    
     const admin = await Admin.findOne({ username, password });
 
     if (!admin) {
       return res.status(404).json({ error: 'Admin not found or invalid credentials' });
     }
 
-    // Retrieve the associated company name from the admin's companyName field
+    
     const requestedCompany = admin.companyName;
 
-    // Use the requestedCompany directly to construct the collection name
-    const CompanyModel = mongoose.model(requestedCompany.toLowerCase(), companySchema);
+   
+    const societe = await Societe.findOne({ nom: requestedCompany });
 
-    // Find the company in its specific collection based on the requestedCompany name
-    const company = await CompanyModel.findOne({ name: requestedCompany });
-
-    if (!company) {
-      return res.status(404).json({ error: 'Company not found' });
+    if (!societe) {
+      return res.status(404).json({ error: 'Societe not found' });
     }
+      // Generate a JWT token with the admin's ID and other information as payload
+      const token = jwt.sign({ adminId: admin._id, isAdmin: admin.isAdmin }, process.env.secret_key, {
+        expiresIn: '1h', // You can set the token expiration time as per your requirement
+      });
+  
 
-    const companyFoundName = company.name;
-
-    res.status(200).json({ message: 'Login successful', company: companyFoundName });
+    
+    res.status(200).json({ message: 'Login successful',token,societe });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
