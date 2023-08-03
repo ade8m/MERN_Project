@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { showAlert } from '../service/alert';
+import {UpdateSociete} from  './updateSociete';
 
 
 export function SocieteComponent() {
@@ -8,6 +9,13 @@ export function SocieteComponent() {
   const [id, setId] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [fetchedSocietes, setFetchedSocietes] = useState([]);
+
+   // State to control whether to show the update form
+   const [showUpdateForm, setShowUpdateForm] = useState(false);
+   // Function to toggle the update form display
+  const toggleUpdateForm = () => {
+    setShowUpdateForm(!showUpdateForm);
+  };
 
   useEffect(() => {
     fetchSocietes();
@@ -21,9 +29,9 @@ export function SocieteComponent() {
         const nomSocietes = data.map((societe) => societe.nom);
         setExistingNoms(nomSocietes);
         setFetchedSocietes(data); 
-        // Set the 'id' value if needed
+        
         if (data.length > 0) {
-          setId(data[0]._id); // Assuming you want to set the 'id' with the first societe's _id
+          setId(data[0]._id); 
         }
       })
       .catch((error) => {
