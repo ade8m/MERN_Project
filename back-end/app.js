@@ -22,13 +22,7 @@ const connect = async () =>{
 // midellware
 app.use(bodyParser.json());
 app.use(express.json());
-app.use(
-    cors({
-      origin: 'http://localhost:3000', // Specify the origin URL of your frontend application
-      optionsSuccessStatus: 200, // Return 200 for preflight requests
-      credentials: true, // Enable CORS with credentials (e.g., cookies, authorization headers)
-    })
-  );
+app.use(cors());
 
 app.use("/voiture",voitureRoute);
 app.use("/auth",AuthRoute);
