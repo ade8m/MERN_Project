@@ -6,7 +6,8 @@ import { useParams } from 'react-router-dom';
 
 export function SocieteComponent() {
   const [societeData, setSocieteData] = useState({});
-  const { societeName } = useParams(); 
+  const { id: routeId } = useParams();
+ 
 
 
   useEffect(() => {
@@ -21,33 +22,42 @@ export function SocieteComponent() {
   };
 
   const handleAddSociete = () => {
-    
-    const requiredFields = [
-      
-      'tva',
-      'annee',
-      'numcontrat',
-      'numfacture',
-      'description',
-    ];
-
+    const requiredFields = ['tva', 'annee', 'numcontrat', 'numfacture', 'description'];
     const isEmpty = requiredFields.some((field) => !societeData[field]);
-
+  
     if (isEmpty) {
       showAlert('One or more required fields are missing', 'error');
       return;
     }
-
-    fetch('http://localhost:3001/societe/:id', {
+  
+    
+    const newData = {
+      Ncontrat: societeData.Ncontrat,
+      Nfacture: societeData.Nfacture,
+      TVA: societeData.TVA,
+      Description: societeData.Description,
+      Anneé: societeData.Anneé,
+    };
+  
+  
+    const storedId = societeData._id;
+  
+    if (!storedId) {
+      showAlert('Societe ID not found in local storage.', 'error');
+      return;
+    }
+  
+    fetch(`http://localhost:3001/societe/${storedId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(societeData),
+      body: JSON.stringify(newData), // Send only the new data to the server
     })
       .then((response) => response.json())
       .then((data) => {
         console.log('Societe added:', data);
+        console.log(storedId);
         showAlert('Societe added successfully!', 'success');
         setSocieteData({});
       })
@@ -56,6 +66,7 @@ export function SocieteComponent() {
         showAlert('Failed to add societe.', 'error');
       });
   };
+  
 
   return (
     <div className="containe">

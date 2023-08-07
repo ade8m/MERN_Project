@@ -8,21 +8,21 @@ exports.addOtherProperties = async (req, res) => {
 
   try {
    
-    const societ = await societe.findById(id);
+    const Societe = await societe.findById(id);
 
-    if (!societ) {
-      return res.status(404).json({ error: 'Societe not found' });
+    if (!Societe) {
+      return res.status(404).json({ error: 'Societee not found' });
     }
 
    
-    societ.Ncontrat = Ncontrat;
-    societ.Nfacture = Nfacture;
-    societ.TVA = TVA;
-    societ.Description = Description;
-    societ.Anneé = Anneé;
+    Societe.Ncontrat = Ncontrat;
+    Societe.Nfacture = Nfacture;
+    Societe.TVA = TVA;
+    Societe.Description = Description;
+    Societe.Anneé = Anneé;
 
     
-    await societ.save();
+    await Societe.save();
 
     res.status(200).json({ message: 'Other properties added to societe successfully' });
   } catch (error) {
