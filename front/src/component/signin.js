@@ -41,6 +41,9 @@ export const SignComponent = () => {
         console.log('Login response data:', data);
         localStorage.setItem('token', data.token);
         localStorage.setItem('societeData', JSON.stringify(data.societe));
+        // Set the societeId in localStorage
+  localStorage.setItem('societeId', JSON.stringify(data.societeId));
+
 
         // Navigate to the /societe route
         navigate(`/societe/${data.societe.nom}`);

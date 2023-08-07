@@ -57,7 +57,7 @@ export function AdminPage() {
       return;
     };
     try {
-      await axios.post('http://localhost:2000/societe', newUser);
+      await axios.post('http://localhost:3001/auth/login', newUser);
       setNewUser({ name: '', address: '', adminUsername: '', adminPassword: '' });
       fetchUsers();
     } catch (error) {
