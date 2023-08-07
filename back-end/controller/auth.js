@@ -7,24 +7,24 @@ exports.register = async (req, res) => {
   try {
     const { name, address, adminUsername, adminPassword } = req.body;
 
-    // Create a new admin for the company
+  
     const admin = new Admin({
       username: adminUsername,
       password: adminPassword,
       companyName: name,
     });
 
-    // Save the admin to the database
+  
     await admin.save();
 
-    // Create a new societe with nom and address
+    
     const societe = new Societe({
       nom: name,
       adress: address,
-      admin: admin._id, // Associate the admin with the societe
+      admin: admin._id, 
     });
 
-    // Save the societe to the database
+   
     await societe.save();
 
     res.status(200).json({ message: 'Company created successfully' });

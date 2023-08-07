@@ -22,7 +22,7 @@ export function SocieteComponent() {
   };
 
   const handleAddSociete = () => {
-    const requiredFields = ['tva', 'annee', 'numcontrat', 'numfacture', 'description'];
+    const requiredFields = ['TVA', 'Anneé', 'Ncontrat', 'Nfacture', 'Description'];
     const isEmpty = requiredFields.some((field) => !societeData[field]);
   
     if (isEmpty) {
@@ -38,6 +38,14 @@ export function SocieteComponent() {
       Description: societeData.Description,
       Anneé: societeData.Anneé,
     };
+    console.log(newData);
+     // Check if societeData contains all the required properties
+  const missingFields = requiredFields.filter((field) => !societeData[field]);
+
+  if (missingFields.length > 0) {
+    showAlert('One or more required fields are missing in societeData.', 'error');
+    return;
+  }
   
   
     const storedId = societeData._id;
@@ -52,8 +60,9 @@ export function SocieteComponent() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newData), // Send only the new data to the server
-    })
+      body: JSON.stringify(newData), 
+     })
+     
       .then((response) => response.json())
       .then((data) => {
         console.log('Societe added:', data);
@@ -108,7 +117,7 @@ export function SocieteComponent() {
             <input
               type="number"
               className="form-control"
-              id="tva"
+              id="TVA"
               value={societeData.TVA}
               onChange={handleInputChange}
             />
@@ -120,7 +129,7 @@ export function SocieteComponent() {
             <input
               type="date"
               className="form-control"
-              id="annee"
+              id="Anneé"
               value={societeData.Anneé}
               onChange={handleInputChange}
             />
@@ -134,7 +143,7 @@ export function SocieteComponent() {
             <input
               type="number"
               className="form-control"
-              id="numcontrat"
+              id="Ncontrat"
               value={societeData.Ncontrat}
               onChange={handleInputChange}
             />
@@ -146,7 +155,7 @@ export function SocieteComponent() {
             <input
               type="number"
               className="form-control"
-              id="numfacture"
+              id="Nfacture"
               value={societeData.Nfacture}
               onChange={handleInputChange}
             />
@@ -158,7 +167,7 @@ export function SocieteComponent() {
             </label>
             <textarea
               className="form-control"
-              id="description"
+              id="Description"
               rows="3"
               value={societeData.Description}
               onChange={handleInputChange}
