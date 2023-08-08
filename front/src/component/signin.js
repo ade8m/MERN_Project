@@ -42,7 +42,7 @@ export const SignComponent = () => {
         localStorage.setItem('token', data.token);
         localStorage.setItem('societeData', JSON.stringify(data.societe));
         // Set the societeId in localStorage
-  localStorage.setItem('societeId', JSON.stringify(data.societeId));
+        localStorage.setItem('societeId', JSON.stringify(data.societeId));
 
 
         // Navigate to the /societe route
