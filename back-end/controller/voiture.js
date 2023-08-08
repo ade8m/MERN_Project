@@ -2,32 +2,42 @@ const voiture = require('../Models/voiture');
 const Color = require('../Models/couleur');
 const Model = require('../Models/model');
 
-
 exports.addVoiture = async (req, res) => {
- 
+  const societeId = req.body.societeId;
 
-   
-    const newVoiture = new voiture({
-      matricule:req.body.matricl,
-      type:req.body.type,
-      Nassurrance:req.body.assur,
-      Nvig:req.body.vigni,
-      Nlaiss:req.body.laispasse,
-      disponibilite:req.body.dispo,  
-      color:req.body.couleur,
-      model:req.body.model,
-    });  
-   newVoiture.save()
-
-  .then(()=>{
-    res.status(200).json(newVoiture);
-    console.log("voiture created!!");
-  })
-  .catch((error) =>{
-    res.status(400).json(error)
+  const newColor = new Color({
+    color: req.body.couleur
   });
 
+  const newModel = new Model({
+    model: req.body.model
+  });
+
+  const newVoiture = new voiture({
+    matricule: req.body.matricl,
+    type: req.body.type,
+    Nassurrance: req.body.assur,
+    Nvig: req.body.vigni,
+    Nlaiss: req.body.laispasse,
+    disponibilite: req.body.dispo,
+    societe: societeId,
+    color: req.body.couleur,
+    model: req.body.model
+  });
+  Promise.all([
+    newColor.save(),
+    newModel.save(),
+    newVoiture.save()
+  ])
+    .then((results) => {
+      res.status(200).json(results[2]); // Return the saved voiture document
+      console.log("voiture created!!");
+    })
+    .catch((error) => {
+      res.status(400).json(error);
+    });
 };
+
 
 exports.UpdateVoiture =(req,res) =>{
 

@@ -4,20 +4,25 @@ import { showAlert } from '../service/alert';
 export function VoitureComponent() {
 
 
-const [voitureData,setVoitureData]= useState({});
+const [societeData,setVoitureData]= useState({});
 
+useEffect(() => {
+    // Retrieve Societe data from local storage
+    const storedSocieteData = JSON.parse(localStorage.getItem('societeData'));
+    setVoitureData(storedSocieteData);
+  }, []);
 
+  
 const handleInputChange = (event) => {
   const { id, value } = event.target;
   setVoitureData((prevData) => ({ ...prevData, [id]: value }));
-
-  
 
 };
 
 
   const handleAddVoiture=()=>{
 
+  
     // Check if any required fields are empty
 const requiredFields = [
   'matricl',
@@ -30,18 +35,30 @@ const requiredFields = [
   'laispasse',
 ];
 
-const isEmpty = requiredFields.some((field) => !voitureData[field]);
+const isEmpty = requiredFields.some((field) => !societeData[field]);
 
 if (isEmpty) {
   showAlert('One or more required fields are missing', 'error');
   return;
 }
+
+
+const storedId = societeData._id;
+
+  if (!storedId) {
+    showAlert('Societe ID not found in local storage.', 'error');
+    return;
+  }
+  const newData = {
+    ...societeData,
+    societeId: storedId,
+  };
     fetch('http://localhost:3001/voiture/New', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(voitureData),
+      body: JSON.stringify(newData),
     })
     .then((response) => response.json())
       .then((data) => {
