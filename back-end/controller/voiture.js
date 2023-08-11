@@ -76,3 +76,31 @@ exports.getVoiture =(req,res)=>{
         res.status(400).json({ error });
       });
 };
+exports.getVoitureS =(req,res) =>{
+const {societeId} = req.params;
+
+voiture.find({ societe: societeId })
+  .then((result) => {
+  res.status(200).json(result);
+  console.log('get all voiture');
+})
+.catch((error) => {
+  res.status(400).json({ error });
+});
+};
+exports.voitureDispo = (req, res) => {
+  const disponibilite = "Louer"; // Change this to match the desired disponibilite status
+
+  voiture.findOne({ disponibilite }) // Query based on the 'disponibilite' field
+    .then((voiture) => {
+      if (!voiture) {
+        return res.status(404).json({ message: "No available voiture found" });
+      }
+
+      res.status(200).json(voiture);
+      console.log('Get available voiture!!');
+    })
+    .catch((error) => {
+      res.status(400).json({ error });
+    });
+};
