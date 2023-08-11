@@ -9,7 +9,7 @@ exports.addVoiture = async (req, res) => {
     color: req.body.couleur
   });
 
-  const newModel = new Model({
+  const newModel = new Model({  
     model: req.body.model
   });
 
@@ -68,7 +68,7 @@ exports.DeleteVoiture =(req,res) =>{
   };
 exports.getVoiture =(req,res)=>{
     voiture.findOne({_id: req.params.id})
-    .then(()=>{
+    .then((voiture)=>{
         res.status(200).json(voiture);
         console.log('get success!!');
     })

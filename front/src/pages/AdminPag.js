@@ -17,7 +17,7 @@ export function AdminPage() {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/get');
+      const response = await axios.get('http://localhost:3001/societe/get');
       setUsers(response.data);
     } catch (error) {
       console.error(error);
@@ -57,8 +57,9 @@ export function AdminPage() {
       return;
     };
     try {
-      await axios.post('http://localhost:3001/auth/login', newUser);
+      await axios.post('http://localhost:3001/auth/add', newUser);
       setNewUser({ name: '', address: '', adminUsername: '', adminPassword: '' });
+      showAlert('Societe has created successfully', 'success');
       fetchUsers();
     } catch (error) {
       console.error(error);
@@ -136,7 +137,7 @@ export function AdminPage() {
             <tr>
               <th>#</th>
               <th>Nom</th>
-              <th>Email</th>
+              <th>address</th>
               <th>Actions</th>
             </tr>
           </thead>

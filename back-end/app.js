@@ -20,9 +20,10 @@ const connect = async () =>{
     };
 
 // midellware
+app.use(cors());
+
 app.use(bodyParser.json());
 app.use(express.json());
-app.use(cors());
 
 app.use("/voiture",voitureRoute);
 app.use("/auth",AuthRoute);

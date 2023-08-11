@@ -46,7 +46,7 @@ export const SignComponent = () => {
 
 
         // Navigate to the /societe route
-        navigate(`/societe/${data.societe.nom}`);
+        navigate(`/${data.societe.nom}`);
       })
       .catch((error) => {
         console.error('Error:', error);
