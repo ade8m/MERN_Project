@@ -44,9 +44,11 @@ export const SignComponent = () => {
         // Set the societeId in localStorage
         localStorage.setItem('societeId', JSON.stringify(data.societeId));
 
-
-        // Navigate to the /societe route
+        if (data.societe && data.societe.adminId) {         
+          navigate('/admin');
+        } else {      
         navigate(`/${data.societe.nom}`);
+        }
       })
       .catch((error) => {
         console.error('Error:', error);
