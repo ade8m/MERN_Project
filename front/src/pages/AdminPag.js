@@ -10,6 +10,7 @@ export function AdminPage() {
   const [updatedUser, setUpdatedUser] = useState({ Nom: '', Email: '' });
   const [editingUserId, setEditingUserId] = useState(null);
   const [newUser, setNewUser]= useState({ Nom: '', Email: '', password: '' });
+  const [showUpdateSection, setShowUpdateSection] = useState(false);
 
   useEffect(() => {
     fetchUsers();
@@ -26,7 +27,7 @@ export function AdminPage() {
 
   const deleteUser = async (userId) => {
     try {
-      await axios.delete(`http://localhost:3001/api/delete/${userId}`);
+      await axios.delete(`http://localhost:3001/societe/delete/${userId}`);
       fetchUsers();
     } catch (error) {
       console.error(error);
@@ -41,7 +42,7 @@ export function AdminPage() {
 
   const saveUpdatedUser = async (userId) => {
     try {
-      await axios.put(`http://localhost:3001/api/update/${userId}`, updatedUser);
+      await axios.put(`http://localhost:3001/societe/update/${userId}`, updatedUser);
       setEditingUserId(null);
       setUpdatedUser({ Nom: '', Email: '' });
       fetchUsers();
@@ -49,6 +50,12 @@ export function AdminPage() {
       console.error(error);
     }
   };
+  const cancelUpdate = () => {
+    setEditingUserId(null);
+    setUpdatedUser({ Nom: '', Email: '' });
+    setShowUpdateSection(false); // Hide the update section
+  };
+  
 
   const registerUser = async (e) => {
     e.preventDefault();
@@ -142,40 +149,43 @@ export function AdminPage() {
             </tr>
           </thead>
           <tbody>
-            {users.map((user, index) => (
-              <React.Fragment key={user._id}>
+            {users.map((societe, index) => (
+              <React.Fragment key={societe._id}>
                 <tr>
                   <td>{index + 1}</td>
-                  <td>{user.Nom}</td>
-                  <td>{user.Email}</td>
+                  <td>{societe.nom}</td>
+                  <td>{societe.adress}</td>
                   <td>
-                    <Button variant="danger"  style={{margin:'5px'}} onClick={() => deleteUser(user._id)}>
+                    <Button variant="danger"  style={{margin:'5px'}} onClick={() => deleteUser(societe._id)}>
                       Delete
                     </Button>
-                    <Button variant="info" onClick={() => updateUser(user._id)}>
+                    <Button variant="info" onClick={() => updateUser(societe._id)}>
                       Update
                     </Button>
                   </td>
                 </tr>
-                {user._id === editingUserId && (
+                {societe._id === editingUserId && (
                   <tr>
                     <td colSpan="4">
                       <input
                         type="text"
                         className="form-control mb-2"
-                        placeholder="Enter new Nom"
-                        value={updatedUser.Nom}
-                        onChange={(e) => setUpdatedUser({ ...updatedUser, Nom: e.target.value })}
+                        placeholder="Enter new name of societe"
+                        value={updatedUser.nom}
+                        onChange={(e) => setUpdatedUser({ ...updatedUser, nom: e.target.value })}
                       />
                       <input
                         type="text"
                         className="form-control mb-2"
-                        placeholder="Enter new Email"
-                        value={updatedUser.Email}
-                        onChange={(e) => setUpdatedUser({ ...updatedUser, Email: e.target.value })}
+                        placeholder="Enter new adress"
+                        value={updatedUser.adress}
+                        onChange={(e) => setUpdatedUser({ ...updatedUser, adress: e.target.value })}
                       />
-                      <Button variant="primary" onClick={() => saveUpdatedUser(user._id)}>
+                      <Button variant="primary" onClick={() => saveUpdatedUser(societe._id)}>
                         Save
+                      </Button>
+                       <Button variant="secondary" onClick={cancelUpdate}>
+                        Cancel
                       </Button>
                     </td>
                   </tr>
