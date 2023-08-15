@@ -5,18 +5,48 @@ export function VoitureComponent() {
 
 
 const [societeData,setVoitureData]= useState({});
+const [voitureList, setVoitureList] = useState([]);
+const [selectedAvailability, setSelectedAvailability] = useState("Libre");
+
 
 useEffect(() => {
     // Retrieve Societe data from local storage
     const storedSocieteData = JSON.parse(localStorage.getItem('societeData'));
     setVoitureData(storedSocieteData);
   }, []);
-
+  const handleAvailabilityChange = (event) => {
+    setSelectedAvailability(event.target.value);
+  };
   
 const handleInputChange = (event) => {
   const { id, value } = event.target;
   setVoitureData((prevData) => ({ ...prevData, [id]: value }));
 
+};
+const handleGetList = () => {
+  let availabilityRoute;
+    switch (selectedAvailability) {
+      case "Libre":
+        availabilityRoute = "libre";
+        break;
+      case "En panne":
+        availabilityRoute = "panne";
+        break;
+      case "Louer":
+        availabilityRoute = "louer";
+        break;
+      default:
+        availabilityRoute = "libre"; // Default to "Libre"
+    }
+  fetch(`http://localhost:3001/voiture/get/${selectedAvailability}`)
+    .then((response) => response.json())
+    .then((data) => {
+     console.log('List of voiture:', data);
+        setVoitureList(data);
+    })
+    .catch((error) => {
+      console.error('Error fetching voiture list:', error);
+    });
 };
 
 
@@ -142,9 +172,28 @@ const storedId = societeData._id;
           >
             Ajouter Nouveau Voiture 
           </button>
-      </div>
+          <button
+            type="button"
+            className="btn btn-secondary custom-button"
+            onClick={handleGetList}
+>
+  Get List of Voitures
+</button>
+     {voitureList.map((voiture) => (
+        <div key={voiture._id}>
+          <table>
+            <tbody>
+              <tr>
+                <td>{voiture.matricl}</td>
+                <td>{voiture.type}</td>
+                <td>{voiture.model}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      ))}
+    </div>
     </div>
   );
 }
-
 export default VoitureComponent;
