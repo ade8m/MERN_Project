@@ -12,11 +12,6 @@ import './style/alert.css';
 import './style/footer.css';
 import './style/nav.css';
 
-import { NavComponent } from './component/nav';
-import { FooterComponent } from './component/footer';
-import {HomePage} from './pages/home';
-
-import { SideBarComponent } from './component/sidebar';
 import { SideBarC } from './component/sidebar2.js';
 import { SocieteComponent } from './pages/societe';
 import { VoitureComponent } from './pages/voiture';
@@ -45,9 +40,10 @@ const App = () => {
       <div id="content">        
         
           <Routes>
-          <Route path="/voiture" element={<VoitureComponent/>}/>
+          <Route path="/:societeName/voiture" element={<VoitureComponent/>}/>
+          <Route path="/:societeName/facture" element={<FactureComponent/>}/>
           <Route path="/:societeName" element={<SocieteComponent/>}/>
-          <Route path="/facture" element={<FactureComponent/>}/>
+          
           <Route path="/admin" element={<AdminPage/>}/>
          
           

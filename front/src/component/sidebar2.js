@@ -106,17 +106,17 @@ export const SideBarC = () => {
               </a>
               <ul className="collapse list-unstyled" id="element">
                 <li>
-                  <Link to="/voiture">
+                  <Link to="/:societeName/voiture">
                     <span>voiture</span>
                   </Link>
                 </li>
                 <li>
-                  <Link to="/facture">
+                  <Link to="/${societe.name}/facture">
                     <span>Facture</span>
                   </Link>
                 </li>
                 <li>
-                  <Link to="/Contrat">
+                  <Link to="/${societe.name}/Contrat">
                     <span>Contrat</span>
                   </Link>
                 </li>
