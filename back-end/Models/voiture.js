@@ -1,7 +1,8 @@
 const mongoose = require ('mongoose');
 
 const voitureSchema = mongoose.Schema({
-    matricule:{type:String},
+    matricule:{type:String ,
+             unique:true},
     type:{type:String},
     model: { type: String }, 
     color: { type: String }, 

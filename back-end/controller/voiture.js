@@ -88,17 +88,18 @@ voiture.find({ societe: societeId })
   res.status(400).json({ error });
 });
 };
-exports.voitureDispo = (req, res) => {
-  const disponibilite = "Louer"; // Change this to match the desired disponibilite status
 
-  voiture.findOne({ disponibilite }) // Query based on the 'disponibilite' field
-    .then((voiture) => {
-      if (!voiture) {
-        return res.status(404).json({ message: "No available voiture found" });
+exports.getVoitureByAvailability = (req, res) => {
+  const { availability } = req.params;
+
+  voiture.find({ disponibilite: availability })
+    .then((voitures) => {
+      if (!voitures) {
+        return res.status(404).json({ message: `No available voiture with ${availability} status found` });
       }
 
-      res.status(200).json(voiture);
-      console.log('Get available voiture!!');
+      res.status(200).json(voitures);
+      console.log(`Get ${availability} voiture list!!`);
     })
     .catch((error) => {
       res.status(400).json({ error });
