@@ -102,21 +102,21 @@ export const SideBarC = () => {
             </li>
             <li>
               <a href="#element" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">
-                <i className="fa fa-diamond purple_color"></i> <span>Elements</span>
+                <i className="fa fa-diamond purple_color"></i> <span>Voiture</span>
               </a>
               <ul className="collapse list-unstyled" id="element">
                 <li>
-                  <Link to="/:societeName/voiture">
-                    <span>voiture</span>
+                  <Link to="/voiture">
+                    <span>ajouter nouveau voiture</span>
                   </Link>
                 </li>
                 <li>
-                  <Link to="/${societe.name}/facture">
-                    <span>Facture</span>
+                  <Link to="/voiture-list">                
+                    <span>liste des voitures</span>
                   </Link>
                 </li>
                 <li>
-                  <Link to="/${societe.name}/Contrat">
+                  <Link to="/voiture-list">
                     <span>Contrat</span>
                   </Link>
                 </li>
