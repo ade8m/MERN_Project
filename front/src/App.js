@@ -17,7 +17,7 @@ import { SocieteComponent } from './pages/societe';
 import { VoitureComponent } from './pages/voiture';
 import { FactureComponent } from './pages/facture';
 import { ContratComponent } from './pages/contrat';
-
+import {VoitureListPage} from'./pages/listVoiture';
 import {AdminPage} from './pages/AdminPag';
 import { SignComponent } from './component/signin';
 import {UpdateSociete} from './pages/updateSociete';
@@ -40,9 +40,10 @@ const App = () => {
       <div id="content">        
         
           <Routes>
-          <Route path="/:societeName/voiture" element={<VoitureComponent/>}/>
+          <Route path="/voiture" element={<VoitureComponent/>}/>
           <Route path="/:societeName/facture" element={<FactureComponent/>}/>
           <Route path="/:societeName" element={<SocieteComponent/>}/>
+          <Route path="/voiture-list" element={<VoitureListPage/>} /> 
           
           <Route path="/admin" element={<AdminPage/>}/>
          
