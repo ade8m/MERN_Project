@@ -53,7 +53,7 @@ export function AdminPage() {
   const cancelUpdate = () => {
     setEditingUserId(null);
     setUpdatedUser({ Nom: '', Email: '' });
-    setShowUpdateSection(false); // Hide the update section
+    setShowUpdateSection(false); 
   };
   
 
