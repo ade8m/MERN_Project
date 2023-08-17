@@ -20,7 +20,12 @@ const connect = async () =>{
     };
 
 // midellware
-app.use(cors());
+app.use(cors({
+    "origin": "*",
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE"
+    
+  }
+  ));
 
 app.use(bodyParser.json());
 app.use(express.json());
