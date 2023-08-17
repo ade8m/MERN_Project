@@ -21,9 +21,9 @@ const connect = async () =>{
 
 // midellware
 app.use(cors({
-    "origin": "*",
-    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE"
-    
+
+   "Access-Control-Allow-Origin": ' * ',
+
   }
   ));
 
