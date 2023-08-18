@@ -91,19 +91,12 @@ const storedId = societeData._id;
           </div>
           <div className="mb-3">
             <label className="form-label">Type</label>
-            <select className="form-control" id="type" onChange={handleInputChange}>
-              <option value="BMW"> BMW</option>
-              <option value="Marcedes"> Marcedes</option>
-              <option value="Wolswagen">Wolswagen</option>
-            </select>
+            <input type="text" className="form-control" id="type" onChange={handleInputChange}/>
           </div>
           <div className="mb-3">
             <label className="form-label">Model</label>
-            <select className="form-control" id="model" onChange={handleInputChange}>
-              <option value="Golv 7">Golv 7</option>
-              <option value="C180">C180</option>
-              <option value="x1">x1</option>
-            </select>
+            <input type="text"  className="form-control" id="model" onChange={handleInputChange}/>
+              
           </div>
           <div className="mb-3">
             <label className="form-label">Couleur</label>
