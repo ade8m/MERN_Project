@@ -1,6 +1,7 @@
 const voiture = require('../Models/voiture');
 const Color = require('../Models/couleur');
 const Model = require('../Models/model');
+const Type = require('../Models/type')
 
 exports.addVoiture = async (req, res) => {
   const societeId = req.body.societeId;
@@ -12,6 +13,10 @@ exports.addVoiture = async (req, res) => {
   const newModel = new Model({  
     model: req.body.model
   });
+  const newType = new Type({  
+    type: req.body.type
+  });
+
 
   const newVoiture = new voiture({
     matricule: req.body.matricl,
@@ -27,7 +32,9 @@ exports.addVoiture = async (req, res) => {
   Promise.all([
     newColor.save(),
     newModel.save(),
+    newType.save(),
     newVoiture.save()
+    
   ])
     .then((results) => {
       res.status(200).json(results[2]); // Return the saved voiture document
