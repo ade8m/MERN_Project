@@ -6,6 +6,7 @@ const societeRoute = require('./Routes/societe');
 const voitureRoute = require('./Routes/voiture');
 const AuthRoute = require('./Routes/auth');
 const userRoute = require('./Routes/user');
+const modelRoute = require('./Routes/model');
 const app = express();
 require('dotenv').config();
 
@@ -34,6 +35,7 @@ app.use("/voiture",voitureRoute);
 app.use("/auth",AuthRoute);
 app.use("/api",userRoute);
 app.use("/societe",societeRoute);
+app.use("/model",modelRoute);
 
 
 //Create Server
