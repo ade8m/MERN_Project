@@ -5,6 +5,12 @@ export function VoitureComponent() {
 
 
 const [societeData,setVoitureData]= useState({});
+ const [models, setModels] = useState([]);
+ const [colors, setColors] = useState([]);
+ const [types, setTypes] = useState([]);
+ const [customModel, setCustomModel] = useState('');
+ const [customType, setCustomType] = useState('');
+ const [customColor, setCustomColor] = useState('');
 
 
 
@@ -13,6 +19,34 @@ useEffect(() => {
     // Retrieve Societe data from local storage
     const storedSocieteData = JSON.parse(localStorage.getItem('societeData'));
     setVoitureData(storedSocieteData);
+
+     // Fetch list of models from your backend
+    fetch('http://localhost:3001/model')
+      .then((response) => response.json())
+      .then((data) => {
+        setModels(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching models:', error);
+      });
+      // Fetch list of color from your backend
+    fetch('http://localhost:3001/color')
+    .then((response) => response.json())
+    .then((data) => {
+      setColors(data);
+    })
+    .catch((error) => {
+      console.error('Error fetching models:', error);
+    });
+    // Fetch list of models from your backend
+    fetch('http://localhost:3001/type')
+      .then((response) => response.json())
+      .then((data) => {
+        setTypes(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching models:', error);
+      });
   }, []);
  
   
@@ -90,23 +124,109 @@ const storedId = societeData._id;
             <input type="text" className="form-control" id="matricl"   onChange={handleInputChange}/>
           </div>
           <div className="mb-3">
-            <label className="form-label">Type</label>
-            <input type="text" className="form-control" id="type" onChange={handleInputChange}/>
-          </div>
-          <div className="mb-3">
-            <label className="form-label">Model</label>
-            <input type="text"  className="form-control" id="model" onChange={handleInputChange}/>
-              
-          </div>
-          <div className="mb-3">
-            <label className="form-label">Couleur</label>
-            <select className="form-control" id="couleur" onChange={handleInputChange}>
-              <option value="bleu">bleu</option>
-              <option value="noir">noir</option>
-              <option value="blanc">blanc</option>
-              <option value="rouge">rouge</option>
-            </select>
-          </div>
+  <label className="form-label">Model</label>
+  <select
+    className="form-control"
+    id="model"
+    value={societeData.model}
+    onChange={(e) => {
+      const selectedModel = e.target.value;
+      if (selectedModel === 'new') {
+        setCustomModel('');
+        handleInputChange(e); // Update model in societeData state
+      } else {
+        handleInputChange(e); // Update model in societeData state
+      }
+    }}
+  >
+    <option value="">Select a model or add a new one</option>
+    {models.map((model) => (
+      <option key={model._id} value={model.model}>
+        {model.model}
+      </option>
+    ))}
+    <option value="new">Add New Model</option>
+  </select>
+  {societeData.model === 'new' && (
+    <input
+      type="text"
+      className="form-control mt-2"
+      placeholder="Enter new model"
+      value={customModel}
+      onChange={(e) => setCustomModel(e.target.value)}
+    />
+  )}
+</div>
+<div className="mb-3">
+  <label className="form-label">Type</label>
+  <select
+    className="form-control"
+    id="type"
+    value={societeData.type}
+    onChange={(e) => {
+      const selectedType = e.target.value;
+      if (selectedType === 'new') {
+        setCustomType('');
+        handleInputChange(e); // Update type in societeData state
+      } else {
+        handleInputChange(e); // Update type in societeData state
+      }
+    }}
+  >
+    <option value="">Select a type or add a new one</option>
+    {types.map((type) => (
+      <option key={type._id} value={type.type}>
+        {type.type}
+      </option>
+    ))}
+    <option value="new">Add New Type</option>
+  </select>
+  {societeData.type === 'new' && (
+    <input
+      type="text"
+      className="form-control mt-2"
+      placeholder="Enter new type"
+      value={customType}
+      onChange={(e) => setCustomType(e.target.value)}
+    />
+  )}
+</div>
+
+<div className="mb-3">
+  <label className="form-label">Color</label>
+  <select
+    className="form-control"
+    id="couleur"
+    value={societeData.couleur}
+    onChange={(e) => {
+      const selectedColor = e.target.value;
+      if (selectedColor === 'new') {
+        setCustomColor('');
+        handleInputChange(e); // Update color in societeData state
+      } else {
+        handleInputChange(e); // Update color in societeData state
+      }
+    }}
+  >
+    <option value="">Select a color or add a new one</option>
+    {colors.map((color) => (
+      <option key={color._id} value={color.color}>
+        {color.color}
+      </option>
+    ))}
+    <option value="new">Add New Color</option>
+  </select>
+  {societeData.couleur === 'new' && (
+    <input
+      type="text"
+      className="form-control mt-2"
+      placeholder="Enter new color"
+      value={customColor}
+      onChange={(e) => setCustomColor(e.target.value)}
+    />
+  )}
+</div>
+
           <div className="mb-3">
             <label className="form-label">Disponibilite</label>
             <select className="form-control" id="dispo" onChange={handleInputChange}>
