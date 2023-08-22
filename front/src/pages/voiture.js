@@ -11,6 +11,8 @@ const [societeData,setVoitureData]= useState({});
  const [customModel, setCustomModel] = useState('');
  const [customType, setCustomType] = useState('');
  const [customColor, setCustomColor] = useState('');
+   const [selectedType, setSelectedType] = useState('');
+  const [selectedModel, setSelectedModel] = useState('');
 
 
 
@@ -90,6 +92,7 @@ const storedId = societeData._id;
   const newData = {
     ...societeData,
     societeId: storedId,
+    
   };
     fetch('http://localhost:3001/voiture/New', {
       method: 'POST',
@@ -123,40 +126,32 @@ const storedId = societeData._id;
             <label className="form-label">Matricule</label>
             <input type="text" className="form-control" id="matricl"   onChange={handleInputChange}/>
           </div>
+         
           <div className="mb-3">
-  <label className="form-label">Model</label>
-  <select
-    className="form-control"
-    id="model"
-    value={societeData.model}
-    onChange={(e) => {
-      const selectedModel = e.target.value;
-      if (selectedModel === 'new') {
-        setCustomModel('');
-        handleInputChange(e); // Update model in societeData state
-      } else {
-        handleInputChange(e); // Update model in societeData state
-      }
-    }}
-  >
-    <option value="">Select a model or add a new one</option>
-    {models.map((model) => (
-      <option key={model._id} value={model.model}>
-        {model.model}
-      </option>
-    ))}
-    <option value="new">Add New Model</option>
-  </select>
-  {societeData.model === 'new' && (
-    <input
-      type="text"
-      className="form-control mt-2"
-      placeholder="Enter new model"
-      value={customModel}
-      onChange={(e) => setCustomModel(e.target.value)}
-    />
-  )}
-</div>
+        <label className="form-label">Model</label>
+        <select
+          className="form-control"
+          value={selectedModel}
+          onChange={(e) => setSelectedModel(e.target.value)}
+        >
+          <option value="">Select a model</option>
+          {models.map((model) => (
+            <option key={model._id} value={model.model}>
+              {model.model}
+            </option>
+          ))}
+          <option value="new">Add New Model</option>
+        </select>
+        {selectedModel === 'new' && (
+          <input
+            type="text"
+            className="form-control mt-2"
+            placeholder="Enter new model"
+            value={customModel}
+            onChange={(e) => setCustomModel(e.target.value)}
+          />
+        )}
+      </div>
 <div className="mb-3">
   <label className="form-label">Type</label>
   <select
