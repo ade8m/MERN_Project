@@ -1,5 +1,6 @@
 import React, { useState,useEffect }  from 'react';
 import { showAlert } from '../service/alert';
+import Autocomplete from 'react-autocomplete'; 
 
 export function VoitureComponent() {
 
@@ -11,8 +12,8 @@ const [societeData,setVoitureData]= useState({});
  const [customModel, setCustomModel] = useState('');
  const [customType, setCustomType] = useState('');
  const [customColor, setCustomColor] = useState('');
-   const [selectedType, setSelectedType] = useState('');
-  const [selectedModel, setSelectedModel] = useState('');
+ const [selectedType, setSelectedType] = useState('');
+ const [selectedModel, setSelectedModel] = useState('');
 
 
 
@@ -57,7 +58,10 @@ const handleInputChange = (event) => {
   setVoitureData((prevData) => ({ ...prevData, [id]: value }));
 
 };
-
+const handleModelChange = (newValue) => {
+  setSelectedModel(newValue);
+  setCustomModel(''); // Clear custom model if selected from suggestions
+};
 
 
   const handleAddVoiture=()=>{
@@ -77,10 +81,10 @@ const requiredFields = [
 
 const isEmpty = requiredFields.some((field) => !societeData[field]);
 
-if (isEmpty) {
-  showAlert('One or more required fields are missing', 'error');
-  return;
-}
+//if (isEmpty) {
+  //showAlert('One or more required fields are missing', 'error');
+  //return;
+//}
 
 
 const storedId = societeData._id;
@@ -89,9 +93,11 @@ const storedId = societeData._id;
     showAlert('Societe ID not found in local storage.', 'error');
     return;
   }
+   
   const newData = {
     ...societeData,
     societeId: storedId,
+    model: selectedModel || customModel,
     
   };
     fetch('http://localhost:3001/voiture/New', {
@@ -126,32 +132,33 @@ const storedId = societeData._id;
             <label className="form-label">Matricule</label>
             <input type="text" className="form-control" id="matricl"   onChange={handleInputChange}/>
           </div>
-         
           <div className="mb-3">
         <label className="form-label">Model</label>
-        <select
-          className="form-control"
-          value={selectedModel}
-          onChange={(e) => setSelectedModel(e.target.value)}
-        >
-          <option value="">Select a model</option>
-          {models.map((model) => (
-            <option key={model._id} value={model.model}>
-              {model.model}
-            </option>
-          ))}
-          <option value="new">Add New Model</option>
-        </select>
-        {selectedModel === 'new' && (
-          <input
-            type="text"
-            className="form-control mt-2"
-            placeholder="Enter new model"
-            value={customModel}
-            onChange={(e) => setCustomModel(e.target.value)}
+        <div>
+          <Autocomplete className="form-control mt-2"
+            getItemValue={(item) => item.model}
+            items={models}
+            renderItem={(item, isHighlighted) => (
+              <div className="form-control mt-2"
+                key={item._id}
+                style={{ background: isHighlighted ? 'lightgray' : 'white' }}
+              >
+                {item.model}
+              </div>
+            )}
+            value={selectedModel}
+            onChange={(e) => setSelectedModel(e.target.value)}
+            onSelect={(value) => {
+              setSelectedModel(value);
+              setCustomModel(''); // Clear custom model if selected from suggestions
+            }}
+            inputProps={{
+              placeholder: 'Select a model or add a new one',
+            }}
           />
-        )}
-      </div>
+          
+        </div>
+        </div>
 <div className="mb-3">
   <label className="form-label">Type</label>
   <select
