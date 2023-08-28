@@ -6,14 +6,15 @@ export function VoitureComponent() {
 
 
 const [societeData,setVoitureData]= useState({});
- const [models, setModels] = useState([]);
+ const [Types, setTypes] = useState([]);
  const [colors, setColors] = useState([]);
- const [types, setTypes] = useState([]);
+
  const [customModel, setCustomModel] = useState('');
  const [customType, setCustomType] = useState('');
  const [customColor, setCustomColor] = useState('');
  const [selectedType, setSelectedType] = useState('');
  const [selectedModel, setSelectedModel] = useState('');
+  const [item, setItem] = useState([]);
 
 
 
@@ -23,15 +24,7 @@ useEffect(() => {
     const storedSocieteData = JSON.parse(localStorage.getItem('societeData'));
     setVoitureData(storedSocieteData);
 
-     // Fetch list of models from your backend
-    fetch('http://localhost:3001/model')
-      .then((response) => response.json())
-      .then((data) => {
-        setModels(data);
-      })
-      .catch((error) => {
-        console.error('Error fetching models:', error);
-      });
+     
       // Fetch list of color from your backend
     fetch('http://localhost:3001/color')
     .then((response) => response.json())
@@ -50,6 +43,17 @@ useEffect(() => {
       .catch((error) => {
         console.error('Error fetching models:', error);
       });
+     
+        // Fetch list of models from your backend
+        fetch('http://localhost:3001/model')
+          .then((response) => response.json())
+          .then((data) => {
+            setItem(data); // Update the list of models
+          })
+          .catch((error) => {
+            console.error('Error fetching models:', error);
+          });
+      
   }, []);
  
   
@@ -62,7 +66,15 @@ const handleModelChange = (newValue) => {
   setSelectedModel(newValue);
   setCustomModel(''); // Clear custom model if selected from suggestions
 };
-
+// Fetch list of models from your backend
+fetch('http://localhost:3001/model')
+.then((response) => response.json())
+.then((data) => {
+  setModels(data);
+})
+.catch((error) => {
+  console.error('Error fetching models:', error);
+});
 
   const handleAddVoiture=()=>{
 
@@ -97,7 +109,7 @@ const storedId = societeData._id;
   const newData = {
     ...societeData,
     societeId: storedId,
-    model: selectedModel || customModel,
+     model: selectedModel || customModel,
     
   };
     fetch('http://localhost:3001/voiture/New', {
@@ -135,11 +147,11 @@ const storedId = societeData._id;
           <div className="mb-3">
         <label className="form-label">Model</label>
         <div>
-          <Autocomplete className="form-control mt-2"
+          <Autocomplete 
             getItemValue={(item) => item.model}
             items={models}
             renderItem={(item, isHighlighted) => (
-              <div className="form-control mt-2"
+              <div 
                 key={item._id}
                 style={{ background: isHighlighted ? 'lightgray' : 'white' }}
               >
@@ -159,40 +171,34 @@ const storedId = societeData._id;
           
         </div>
         </div>
-<div className="mb-3">
-  <label className="form-label">Type</label>
-  <select
-    className="form-control"
-    id="type"
-    value={societeData.type}
-    onChange={(e) => {
-      const selectedType = e.target.value;
-      if (selectedType === 'new') {
-        setCustomType('');
-        handleInputChange(e); // Update type in societeData state
-      } else {
-        handleInputChange(e); // Update type in societeData state
-      }
-    }}
-  >
-    <option value="">Select a type or add a new one</option>
-    {types.map((type) => (
-      <option key={type._id} value={type.type}>
-        {type.type}
-      </option>
-    ))}
-    <option value="new">Add New Type</option>
-  </select>
-  {societeData.type === 'new' && (
-    <input
-      type="text"
-      className="form-control mt-2"
-      placeholder="Enter new type"
-      value={customType}
-      onChange={(e) => setCustomType(e.target.value)}
-    />
-  )}
-</div>
+        <div className="mb-3">
+        <label className="form-label">type</label>
+        <div>
+          <Autocomplete 
+            getItemValue={(item) => item.Type}
+            items={Types}
+            renderItem={(item, isHighlighted) => (
+              <div 
+                key={item._id}
+                style={{ background: isHighlighted ? 'lightgray' : 'white' }}
+              >
+                {item.Type}
+              </div>
+            )}
+            value={selectedType}
+            onChange={(e) => setSelectedType(e.target.value)}
+            onSelect={(value) => {
+              setSelectedType(value);
+              setCustomType(''); // Clear custom Type if selected from suggestions
+            }}
+            inputProps={{
+              placeholder: 'Select a Type or add a new one',
+            }}
+          />
+          
+        </div>
+        </div>
+  
 
 <div className="mb-3">
   <label className="form-label">Color</label>
