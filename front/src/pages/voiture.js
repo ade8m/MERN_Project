@@ -14,7 +14,9 @@ const [societeData,setVoitureData]= useState({});
  const [customColor, setCustomColor] = useState('');
  const [selectedType, setSelectedType] = useState('');
  const [selectedModel, setSelectedModel] = useState('');
+ const [selectedColor, setSelectedColor] = useState('');
   const [item, setItem] = useState([]);
+  
 
 
 
@@ -32,13 +34,14 @@ useEffect(() => {
       setColors(data);
     })
     .catch((error) => {
-      console.error('Error fetching models:', error);
+      console.error('Error fetching colors:', error);
     });
     // Fetch list of models from your backend
     fetch('http://localhost:3001/type')
       .then((response) => response.json())
       .then((data) => {
         setTypes(data);
+        console.log(setTypes);
       })
       .catch((error) => {
         console.error('Error fetching models:', error);
@@ -49,6 +52,7 @@ useEffect(() => {
           .then((response) => response.json())
           .then((data) => {
             setItem(data); // Update the list of models
+            
           })
           .catch((error) => {
             console.error('Error fetching models:', error);
@@ -66,15 +70,7 @@ const handleModelChange = (newValue) => {
   setSelectedModel(newValue);
   setCustomModel(''); // Clear custom model if selected from suggestions
 };
-// Fetch list of models from your backend
-fetch('http://localhost:3001/model')
-.then((response) => response.json())
-.then((data) => {
-  setModels(data);
-})
-.catch((error) => {
-  console.error('Error fetching models:', error);
-});
+
 
   const handleAddVoiture=()=>{
 
@@ -133,8 +129,8 @@ const storedId = societeData._id;
   };
 
   
-  return (
-    <div className="containe">
+  return  (
+    <div className="container">
       {/* Alert */}
       <div id="alert" className="alert" style={{ display: 'none' }}></div>
       <h3>voir votre voiture:</h3>
@@ -142,99 +138,88 @@ const storedId = societeData._id;
         <div className="col-md-6">
           <div className="mb-3">
             <label className="form-label">Matricule</label>
-            <input type="text" className="form-control" id="matricl"   onChange={handleInputChange}/>
+            <input type="text" className="form-control" id="matricl" onChange={handleInputChange} />
           </div>
           <div className="mb-3">
-        <label className="form-label">Model</label>
-        <div>
-          <Autocomplete 
-            getItemValue={(item) => item.model}
-            items={models}
-            renderItem={(item, isHighlighted) => (
-              <div 
-                key={item._id}
-                style={{ background: isHighlighted ? 'lightgray' : 'white' }}
-              >
-                {item.model}
-              </div>
-            )}
-            value={selectedModel}
-            onChange={(e) => setSelectedModel(e.target.value)}
-            onSelect={(value) => {
-              setSelectedModel(value);
-              setCustomModel(''); // Clear custom model if selected from suggestions
-            }}
-            inputProps={{
-              placeholder: 'Select a model or add a new one',
-            }}
-          />
-          
-        </div>
-        </div>
-        <div className="mb-3">
-        <label className="form-label">type</label>
-        <div>
-          <Autocomplete 
-            getItemValue={(item) => item.Type}
-            items={Types}
-            renderItem={(item, isHighlighted) => (
-              <div 
-                key={item._id}
-                style={{ background: isHighlighted ? 'lightgray' : 'white' }}
-              >
-                {item.Type}
-              </div>
-            )}
-            value={selectedType}
-            onChange={(e) => setSelectedType(e.target.value)}
-            onSelect={(value) => {
-              setSelectedType(value);
-              setCustomType(''); // Clear custom Type if selected from suggestions
-            }}
-            inputProps={{
-              placeholder: 'Select a Type or add a new one',
-            }}
-          />
-          
-        </div>
-        </div>
+            <label className="form-label">Model</label>
+            <div>
+              <Autocomplete
+                getItemValue={(item) => item.model}
+                items={item}
+                renderItem={(item, isHighlighted) => (
+                  <div
+                    key={item._id}
+                    style={{ background: isHighlighted ? 'lightgray' : 'white' }}
+                  >
+                    {item.model}
+                  </div>
+                )}
+                value={selectedModel}
+                onChange={(e) => setSelectedModel(e.target.value)}
+                onSelect={(value) => {
+                  setSelectedModel(value);
+                  setCustomModel(''); // Clear custom model if selected from suggestions
+                }}
+                inputProps={{
+                  placeholder: 'Select a model or add a new one',
+                }}
+              />
+            </div>
+          </div>
+          <div className="mb-3">
+            <label className="form-label">type</label>
+            <div>
+              <Autocomplete
+                getItemValue={(Types) => Types.Type}
+                items={Types}
+                renderItem={(item, isHighlighted) => (
+                  <div
+                    key={item._id}
+                    style={{ background: isHighlighted ? 'lightgray' : 'white' }}
+                  >
+                    {item.Type}
+                  </div>
+                )}
+                value={selectedType}
+                onChange={(e) => setSelectedType(e.target.value)}
+                onSelect={(value) => {
+                  setSelectedType(value);
+                  setCustomType(''); // Clear custom Type if selected from suggestions
+                }}
+                inputProps={{
+                  placeholder: 'Select a Type or add a new one',
+                }}
+              />
+            </div>
+          </div>
   
-
-<div className="mb-3">
-  <label className="form-label">Color</label>
-  <select
-    className="form-control"
-    id="couleur"
-    value={societeData.couleur}
-    onChange={(e) => {
-      const selectedColor = e.target.value;
-      if (selectedColor === 'new') {
-        setCustomColor('');
-        handleInputChange(e); // Update color in societeData state
-      } else {
-        handleInputChange(e); // Update color in societeData state
-      }
-    }}
-  >
-    <option value="">Select a color or add a new one</option>
-    {colors.map((color) => (
-      <option key={color._id} value={color.color}>
-        {color.color}
-      </option>
-    ))}
-    <option value="new">Add New Color</option>
-  </select>
-  {societeData.couleur === 'new' && (
-    <input
-      type="text"
-      className="form-control mt-2"
-      placeholder="Enter new color"
-      value={customColor}
-      onChange={(e) => setCustomColor(e.target.value)}
-    />
-  )}
-</div>
-
+          <div className="mb-3">
+            <label className="form-label">Color</label>
+            <div>
+              <Autocomplete
+                getItemValue={(item) => item.couleur}
+                items={colors}
+                renderItem={(item, isHighlighted) => (
+                  <div
+                    key={item._id}
+                    style={{ background: isHighlighted ? 'lightgray' : 'white' }}
+                  >
+                    {item.couleur}
+                  </div>
+                )}
+                value={selectedColor}
+                onChange={(e) => setSelectedColor(e.target.value)}
+                onSelect={(value) => {
+                  setSelectedColor(value);
+                  setCustomColor(''); // Clear custom Type if selected from suggestions
+                }}
+                inputProps={{
+                  placeholder: 'Select a Color or add a new one',
+                }}
+              />
+            </div>
+          </div>
+  
           <div className="mb-3">
             <label className="form-label">Disponibilite</label>
             <select className="form-control" id="dispo" onChange={handleInputChange}>
@@ -244,34 +229,33 @@ const storedId = societeData._id;
             </select>
           </div>
         </div>
-
+  
         <div className="col-md-6">
           <div className="mb-3">
             <label className="form-label">Numéro Assurance</label>
-            <input type="number" className="form-control" id="assu"   onChange={handleInputChange}/>
+            <input type="number" className="form-control" id="assu" onChange={handleInputChange} />
           </div>
           <div className="mb-3">
             <label htmlFor="numFacture" className="form-label">Numéro Vignette</label>
-            <input type="number" className="form-control" id="vigni"  onChange={handleInputChange}/>
+            <input type="number" className="form-control" id="vigni" onChange={handleInputChange} />
           </div>
           <div className="mb-3">
             <label htmlFor="tfNumero" className="form-label">Numéro Laisse Passer</label>
-            <input type="number" className="form-control" id="laispasse"  onChange={handleInputChange}/>
+            <input type="number" className="form-control" id="laispasse" onChange={handleInputChange} />
           </div>
         </div>
-        <button
-            type="button"
-            className="btn btn-primary  custom-button"
-            onClick={handleAddVoiture}
-            
-          >
-            Ajouter Nouveau Voiture 
-          </button>
-        
-     
-      
-    </div>
+      </div>
+  
+      <button
+        type="button"
+        className="btn btn-primary custom-button"
+        onClick={handleAddVoiture}
+      >
+        Ajouter Nouveau Voiture
+      </button>
     </div>
   );
+  
 }
+
 export default VoitureComponent;
