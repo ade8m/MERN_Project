@@ -16,6 +16,8 @@ const [societeData,setVoitureData]= useState({});
  const [selectedModel, setSelectedModel] = useState('');
  const [selectedColor, setSelectedColor] = useState('');
   const [item, setItem] = useState([]);
+  const [item1, setItem1] = useState([]);
+   const [item2, setItem2] = useState([]);
   
 
 
@@ -31,7 +33,8 @@ useEffect(() => {
     fetch('http://localhost:3001/color')
     .then((response) => response.json())
     .then((data) => {
-      setColors(data);
+      setItem1(data);
+      console.log(data);
     })
     .catch((error) => {
       console.error('Error fetching colors:', error);
@@ -40,8 +43,8 @@ useEffect(() => {
     fetch('http://localhost:3001/type')
       .then((response) => response.json())
       .then((data) => {
-        setTypes(data);
-        console.log(setTypes);
+        setItem2(data);
+        console.log(data);
       })
       .catch((error) => {
         console.error('Error fetching models:', error);
@@ -51,8 +54,8 @@ useEffect(() => {
         fetch('http://localhost:3001/model')
           .then((response) => response.json())
           .then((data) => {
-            setItem(data); // Update the list of models
-            
+            setItem(data); 
+            console.log(data);
           })
           .catch((error) => {
             console.error('Error fetching models:', error);
@@ -170,21 +173,21 @@ const storedId = societeData._id;
             <label className="form-label">type</label>
             <div>
               <Autocomplete
-                getItemValue={(Types) => Types.Type}
-                items={Types}
+                getItemValue={(setItem2) => item2.Type} // Corrected value extraction
+                items={item2} // Use the Types state variable
                 renderItem={(item, isHighlighted) => (
                   <div
                     key={item._id}
                     style={{ background: isHighlighted ? 'lightgray' : 'white' }}
                   >
-                    {item.Type}
+                    {item2.Type}
                   </div>
                 )}
-                value={selectedType}
-                onChange={(e) => setSelectedType(e.target.value)}
-                onSelect={(value) => {
+                value={selectedType || customType} // Use selectedType or customType
+                onChange={(e) => {
+                  const value = e.target.value;
                   setSelectedType(value);
-                  setCustomType(''); // Clear custom Type if selected from suggestions
+                  setCustomType(value); // Update customType
                 }}
                 inputProps={{
                   placeholder: 'Select a Type or add a new one',
@@ -197,14 +200,14 @@ const storedId = societeData._id;
             <label className="form-label">Color</label>
             <div>
               <Autocomplete
-                getItemValue={(item) => item.couleur}
-                items={colors}
-                renderItem={(item, isHighlighted) => (
+                getItemValue={(item1) => item1.couleur}
+                items={item1}
+                renderItem={(item1, isHighlighted) => (
                   <div
-                    key={item._id}
+                    key={item1._id}
                     style={{ background: isHighlighted ? 'lightgray' : 'white' }}
                   >
-                    {item.couleur}
+                    {item1.color}
                   </div>
                 )}
                 value={selectedColor}
