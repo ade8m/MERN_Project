@@ -75,7 +75,36 @@ export function SocieteComponent() {
         showAlert('Failed to add societe.', 'error');
       });
   };
-  
+  const handleUpdateSociete = () => {
+    // Prepare the updated data based on the current state
+    const updatedData = {
+      nom: societeData.nom,
+      adress: societeData.adress,
+      Ncontrat: societeData.Ncontrat,
+      Nfacture: societeData.Nfacture,
+      tva: societeData.TVA,
+      Description: societeData.Description,
+      Anneé: societeData.Anneé,
+    };
+    const storedId = societeData._id;
+    // Send a request to update the societe object
+    fetch(`http://localhost:3001/societe/${storedId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Societe updated:', data);
+        showAlert('Societe updated successfully!', 'success');
+      })
+      .catch((error) => {
+        console.error('Error updating societe:', error);
+        showAlert('Failed to update societe.', 'error');
+      });
+  };
 
   return (
     <div className="containe">
@@ -183,6 +212,14 @@ export function SocieteComponent() {
           >
             Ajouter Nouveau Societe
           </button>
+          <button
+  type="button"
+  className="btn btn-primary custom-button"
+  onClick={handleUpdateSociete}
+  style={{ margin: '5px' }}
+>
+  Update Societe
+</button>
        
       </div>  
       </div>
