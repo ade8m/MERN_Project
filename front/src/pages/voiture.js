@@ -43,7 +43,7 @@ useEffect(() => {
     fetch('http://localhost:3001/type')
       .then((response) => response.json())
       .then((data) => {
-        setItem2(data);
+        setItem(data);
         console.log(data);
       })
       .catch((error) => {
@@ -72,6 +72,14 @@ const handleInputChange = (event) => {
 const handleModelChange = (newValue) => {
   setSelectedModel(newValue);
   setCustomModel(''); // Clear custom model if selected from suggestions
+};
+const handleTypeChange = (newValue) => {
+  setSelectedType(newValue);
+  setCustomType(''); // Clear custom type if selected from suggestions
+};
+const handleColorChange = (newValue) => {
+  setSelectedColor(newValue);
+  setCustomColor(''); // Clear custom color if selected from suggestions
 };
 
 
@@ -109,6 +117,8 @@ const storedId = societeData._id;
     ...societeData,
     societeId: storedId,
      model: selectedModel || customModel,
+     type: selectedType || customType,
+     couleur:selectedColor || customColor,
     
   };
     fetch('http://localhost:3001/voiture/New', {
@@ -173,14 +183,14 @@ const storedId = societeData._id;
             <label className="form-label">type</label>
             <div>
               <Autocomplete
-                getItemValue={(setItem2) => item2.Type} // Corrected value extraction
-                items={item2} // Use the Types state variable
+                getItemValue={(item) => item.Type} // Corrected value extraction
+                items={item} // Use the Types state variable
                 renderItem={(item, isHighlighted) => (
                   <div
                     key={item._id}
                     style={{ background: isHighlighted ? 'lightgray' : 'white' }}
                   >
-                    {item2.Type}
+                    {item.Type}
                   </div>
                 )}
                 value={selectedType || customType} // Use selectedType or customType
@@ -189,6 +199,7 @@ const storedId = societeData._id;
                   setSelectedType(value);
                   setCustomType(value); // Update customType
                 }}
+                onSelect={handleTypeChange}
                 inputProps={{
                   placeholder: 'Select a Type or add a new one',
                 }}
