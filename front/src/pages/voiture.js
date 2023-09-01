@@ -7,7 +7,7 @@ export function VoitureComponent() {
 
 const [societeData,setVoitureData]= useState({});
  const [Types, setTypes] = useState([]);
- const [colors, setColors] = useState([]);
+ const [colorItems, setColorItems] = useState([]);
 
  const [customModel, setCustomModel] = useState('');
  const [customType, setCustomType] = useState('');
@@ -33,8 +33,15 @@ useEffect(() => {
     fetch('http://localhost:3001/color')
     .then((response) => response.json())
     .then((data) => {
-      setItem1(data);
-      console.log(data);
+      // Debugging
+console.log('Fetched data:', data);
+
+const colorItems = data.map((item) => ({
+  _id: item._id,
+  color: item.color,
+}));
+console.log('Transformed colorItems:', colorItems);
+      setColorItems(colorItems);
     })
     .catch((error) => {
       console.error('Error fetching colors:', error);
@@ -182,55 +189,36 @@ const storedId = societeData._id;
           <div className="mb-3">
             <label className="form-label">type</label>
             <div>
-              <Autocomplete
-                getItemValue={(item) => item.Type} // Corrected value extraction
-                items={item} // Use the Types state variable
-                renderItem={(item, isHighlighted) => (
-                  <div
-                    key={item._id}
-                    style={{ background: isHighlighted ? 'lightgray' : 'white' }}
-                  >
-                    {item.Type}
-                  </div>
-                )}
-                value={selectedType || customType} // Use selectedType or customType
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setSelectedType(value);
-                  setCustomType(value); // Update customType
-                }}
-                onSelect={handleTypeChange}
-                inputProps={{
-                  placeholder: 'Select a Type or add a new one',
-                }}
-              />
-            </div>
+       
+</div>
+
           </div>
   
           <div className="mb-3">
             <label className="form-label">Color</label>
             <div>
-              <Autocomplete
-                getItemValue={(item1) => item1.couleur}
-                items={item1}
-                renderItem={(item1, isHighlighted) => (
-                  <div
-                    key={item1._id}
-                    style={{ background: isHighlighted ? 'lightgray' : 'white' }}
-                  >
-                    {item1.color}
-                  </div>
-                )}
-                value={selectedColor}
-                onChange={(e) => setSelectedColor(e.target.value)}
-                onSelect={(value) => {
-                  setSelectedColor(value);
-                  setCustomColor(''); // Clear custom Type if selected from suggestions
-                }}
-                inputProps={{
-                  placeholder: 'Select a Color or add a new one',
-                }}
-              />
+            <Autocomplete
+  getItemValue={(item) => item.color}
+  items={colorItems} // Use the colorItems array
+  renderItem={(item, isHighlighted) => (
+    <div
+      key={item._id}
+      style={{ background: isHighlighted ? 'lightgray' : 'white' }}
+    >
+      {item.color}
+    </div>
+  )}
+  value={selectedColor}
+  onChange={(e) => setSelectedColor(e.target.value)}
+  onSelect={(value) => {
+    setSelectedColor(value);
+    setCustomColor(''); // Clear custom Type if selected from suggestions
+  }}
+  inputProps={{
+    placeholder: 'Select a Color or add a new one',
+  }}
+/>
+
             </div>
           </div>
   
