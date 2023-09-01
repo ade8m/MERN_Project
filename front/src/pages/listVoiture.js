@@ -39,6 +39,7 @@ export function VoitureListPage() {
             <th>Matricule</th>
             <th>Type</th>
             <th>Model</th>
+            <th>couleur</th>
           </tr>
         </thead>
         <tbody>
@@ -48,6 +49,7 @@ export function VoitureListPage() {
               <td>{voiture.matricule}</td>
               <td>{voiture.type}</td>
               <td>{voiture.model}</td>
+              <td>{voiture.color}</td>
             </tr>
           ))}
         </tbody>
