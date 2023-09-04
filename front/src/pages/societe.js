@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { showAlert } from '../service/alert';
-import { useParams } from 'react-router-dom';
+import { useSociete } from '../Context/SocieteContext';
 
 
 
 export function SocieteComponent() {
+
+   const { setSocieteId } = useSociete();
   const [societeData, setSocieteData] = useState({});
-  const { id: routeId } = useParams();
+ 
  
 
 
   useEffect(() => {
     // Retrieve Societe data from local storage
     const storedSocieteData = JSON.parse(localStorage.getItem('societeData'));
-    setSocieteData(storedSocieteData);
+    setSocieteId(storedSocieteData);
   }, []);
 
   const handleInputChange = (event) => {

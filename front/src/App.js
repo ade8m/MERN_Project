@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
+import { SocieteProvider } from './Context/SocieteContext';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -27,8 +28,10 @@ const App = () => {
 
  
   return (
-    <BrowserRouter>
 
+      
+    <BrowserRouter>
+<SocieteProvider>
     <Routes>
       <Route path="/" element={<SignComponent/>}/>
       <Route path="/societe/update" element={<UpdateSociete/>}/>
@@ -52,6 +55,7 @@ const App = () => {
       </div>
     </div>
   </div>
+  </SocieteProvider>
     </BrowserRouter>
   );
 };

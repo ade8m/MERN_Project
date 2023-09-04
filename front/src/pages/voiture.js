@@ -1,119 +1,120 @@
-import React, { useState,useEffect }  from 'react';
-import { showAlert } from '../service/alert';
-import Autocomplete from 'react-autocomplete'; 
+  import React, { useState,useEffect }  from 'react';
+  import { showAlert } from '../service/alert';
+  import Autocomplete from 'react-autocomplete'; 
+  import { useSociete } from '../Context/SocieteContext';
 
-export function VoitureComponent() {
-
-
-const [societeData,setVoitureData]= useState({});
- const [TypesItems, setTypesItems] = useState([]);
- const [colorItems, setColorItems] = useState([]);
-
- const [customModel, setCustomModel] = useState('');
- const [customType, setCustomType] = useState('');
- const [customColor, setCustomColor] = useState('');
- const [selectedType, setSelectedType] = useState('');
- const [selectedModel, setSelectedModel] = useState('');
- const [selectedColor, setSelectedColor] = useState('');
-  const [item, setItem] = useState([]);
-
-  
+  export function VoitureComponent() {
 
 
+  const [societeData,setVoitureData]= useState({});
+  const [TypesItems, setTypesItems] = useState([]);
+  const [colorItems, setColorItems] = useState([]);
+
+  const [customModel, setCustomModel] = useState('');
+  const [customType, setCustomType] = useState('');
+  const [customColor, setCustomColor] = useState('');
+  const [selectedType, setSelectedType] = useState('');
+  const [selectedModel, setSelectedModel] = useState('');
+  const [selectedColor, setSelectedColor] = useState('');
+    const [item, setItem] = useState([]);
+
+    
 
 
-useEffect(() => {
-    // Retrieve Societe data from local storage
-    const storedSocieteData = JSON.parse(localStorage.getItem('societeData'));
-    setVoitureData(storedSocieteData);
 
-     
-      // Fetch list of color from your backend
-    fetch('http://localhost:3001/color')
-    .then((response) => response.json())
-    .then((data) => {
- 
-        const colorItems = data.map((item) => ({
-          _id: item._id,
-          color: item.color,
-        }));
 
-              setColorItems(colorItems);
-    })
-    .catch((error) => {
-      console.error('Error fetching colors:', error);
-    });
-    // Fetch list of models from your backend
-    fetch('http://localhost:3001/type')
+  useEffect(() => {
+      // Retrieve Societe data from local storage
+      const storedSocieteData = JSON.parse(localStorage.getItem('societeData'));
+      setVoitureData(storedSocieteData);
+
+      
+        // Fetch list of color from your backend
+      fetch('http://localhost:3001/color')
       .then((response) => response.json())
       .then((data) => {
-       const TypesItems = data.map((item) =>({
-        _id: item._id,
-        type: item.type
-       }));
-       setTypesItems(TypesItems);
+  
+          const colorItems = data.map((item) => ({
+            _id: item._id,
+            color: item.color,
+          }));
+
+                setColorItems(colorItems);
       })
       .catch((error) => {
-        console.error('Error fetching models:', error);
+        console.error('Error fetching colors:', error);
       });
-     
-        // Fetch list of models from your backend
-        fetch('http://localhost:3001/model')
-          .then((response) => response.json())
-          .then((data) => {
-            setItem(data); 
-            
-          })
-          .catch((error) => {
-            console.error('Error fetching models:', error);
-          });
+      // Fetch list of models from your backend
+      fetch('http://localhost:3001/type')
+        .then((response) => response.json())
+        .then((data) => {
+        const TypesItems = data.map((item) =>({
+          _id: item._id,
+          type: item.type
+        }));
+        setTypesItems(TypesItems);
+        })
+        .catch((error) => {
+          console.error('Error fetching models:', error);
+        });
       
-  }, []);
- 
+          // Fetch list of models from your backend
+          fetch('http://localhost:3001/model')
+            .then((response) => response.json())
+            .then((data) => {
+              setItem(data); 
+              
+            })
+            .catch((error) => {
+              console.error('Error fetching models:', error);
+            });
+        
+    }, []);
   
-const handleInputChange = (event) => {
-  const { id, value } = event.target;
-  setVoitureData((prevData) => ({ ...prevData, [id]: value }));
-  }
+    
+  const handleInputChange = (event) => {
+    const { id, value } = event.target;
+    setVoitureData((prevData) => ({ ...prevData, [id]: value }));
+    }
 
 
-  const handleAddVoiture=()=>{
+    const handleAddVoiture=()=>{
 
-  
-   
-const requiredFields = [
-  'matricl',
-  'type',
-  'model',
-  'couleur',
-  'dispo',
-  'assu',
-  'vigni',
-  'laispasse',
-];
+    
+    
+  const requiredFields = [
+    'matricl',
+    'type',
+    'model',
+    'couleur',
+    'dispo',
+    'assu',
+    'vigni',
+    'laispasse',
+  ];
 
-const isEmpty = requiredFields.some((field) => !societeData[field]);
+  const isEmpty = requiredFields.some((field) => !societeData[field]);
 
-//if (isEmpty) {
-  //showAlert('One or more required fields are missing', 'error');
-  //return;
-//}
-
-
-const storedId = societeData._id;
-
-  if (!storedId) {
-    showAlert('Societe ID not found in local storage.', 'error');
+  if (isEmpty) {
+    showAlert('One or more required fields are missing', 'error');
     return;
   }
-   
-  const newData = {
-    ...societeData,
-    societeId: storedId,
-     model: selectedModel || customModel,
-     type: selectedType || customType,
-     couleur:selectedColor || customColor,
+
+
+  const storedId = societeData._id;
+
+    if (!storedId) {
+      showAlert('Societe ID not found in local storage.', 'error');
+      return;
+    }
     
+    const newData = {
+      ...societeData,
+      societeId: storedId,
+      model: selectedModel || customModel,
+      type: selectedType || customType,
+      couleur:selectedColor || customColor,
+      
   };
     fetch('http://localhost:3001/voiture/New', {
       method: 'POST',

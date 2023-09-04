@@ -1,22 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { Table } from 'react-bootstrap';
+import { useSociete } from '../Context/SocieteContext';
 
 export function VoitureListPage() {
+
+    const { societeId } = useSociete();
   const [voitureList, setVoitureList] = useState([]);
   const [availability, setAvailability] = useState("Libre");
 
   useEffect(() => {
+    if (!societeId) {
+      return; // Don't fetch voitures if societe ID is not set
+    }
     fetch(`http://localhost:3001/voiture/${availability}`)
       .then((response) => response.json())
       .then((data) => {
         console.log('List of voiture:', data);
-        setVoitureList(data);
+        setVoitureList(data); 
       })
       .catch((error) => {
         console.error('Error fetching voiture list:', error);
       });
-  }, [availability]);
-
+  },  [availability, societeId]);
+  
   const handleAvailabilityChange = (event) => {
     setAvailability(event.target.value);
   };
