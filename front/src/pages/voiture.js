@@ -6,7 +6,7 @@ export function VoitureComponent() {
 
 
 const [societeData,setVoitureData]= useState({});
- const [Types, setTypes] = useState([]);
+ const [TypesItems, setTypesItems] = useState([]);
  const [colorItems, setColorItems] = useState([]);
 
  const [customModel, setCustomModel] = useState('');
@@ -16,8 +16,7 @@ const [societeData,setVoitureData]= useState({});
  const [selectedModel, setSelectedModel] = useState('');
  const [selectedColor, setSelectedColor] = useState('');
   const [item, setItem] = useState([]);
-  const [item1, setItem1] = useState([]);
-   const [item2, setItem2] = useState([]);
+
   
 
 
@@ -33,15 +32,13 @@ useEffect(() => {
     fetch('http://localhost:3001/color')
     .then((response) => response.json())
     .then((data) => {
-      // Debugging
-console.log('Fetched data:', data);
+ 
+        const colorItems = data.map((item) => ({
+          _id: item._id,
+          color: item.color,
+        }));
 
-const colorItems = data.map((item) => ({
-  _id: item._id,
-  color: item.color,
-}));
-console.log('Transformed colorItems:', colorItems);
-      setColorItems(colorItems);
+              setColorItems(colorItems);
     })
     .catch((error) => {
       console.error('Error fetching colors:', error);
@@ -50,8 +47,11 @@ console.log('Transformed colorItems:', colorItems);
     fetch('http://localhost:3001/type')
       .then((response) => response.json())
       .then((data) => {
-        setItem(data);
-        console.log(data);
+       const TypesItems = data.map((item) =>({
+        _id: item._id,
+        type: item.type
+       }));
+       setTypesItems(TypesItems);
       })
       .catch((error) => {
         console.error('Error fetching models:', error);
@@ -62,7 +62,7 @@ console.log('Transformed colorItems:', colorItems);
           .then((response) => response.json())
           .then((data) => {
             setItem(data); 
-            console.log(data);
+            
           })
           .catch((error) => {
             console.error('Error fetching models:', error);
@@ -74,20 +74,7 @@ console.log('Transformed colorItems:', colorItems);
 const handleInputChange = (event) => {
   const { id, value } = event.target;
   setVoitureData((prevData) => ({ ...prevData, [id]: value }));
-
-};
-const handleModelChange = (newValue) => {
-  setSelectedModel(newValue);
-  setCustomModel(''); // Clear custom model if selected from suggestions
-};
-const handleTypeChange = (newValue) => {
-  setSelectedType(newValue);
-  setCustomType(''); // Clear custom type if selected from suggestions
-};
-const handleColorChange = (newValue) => {
-  setSelectedColor(newValue);
-  setCustomColor(''); // Clear custom color if selected from suggestions
-};
+  }
 
 
   const handleAddVoiture=()=>{
@@ -189,7 +176,45 @@ const storedId = societeData._id;
           <div className="mb-3">
             <label className="form-label">type</label>
             <div>
-       
+            <Autocomplete
+    // Items is the list of suggestions
+    // displayed while the user types
+         getItemValue={(item) => item.type}
+          items={TypesItems}
+   
+    
+    renderItem={(item, isHighlighted) => (
+      // Styling to highlight the selected item
+      <div
+        style={{
+          background: isHighlighted ? '#bcf5bc' : 'white',
+        }}
+        key={item.id}
+      >
+        {item.type}
+      </div>
+    )}
+    value={selectedType || customType}
+    // The onChange event watches for
+    // changes in an input field
+    onChange={(e) => {
+      const value = e.target.value;
+      setSelectedType(value);
+      setCustomType(value); // Update customType
+    }}
+   
+    onSelect={(val) => setSelectedType(val)}
+    
+    inputProps={{
+      style: {
+        width: '300px',
+        height: '28px',
+        background: '#e4f3f7',
+        border: '2px outset lightgray',
+      },
+      placeholder: 'Search Type',
+    }}
+  />
 </div>
 
           </div>
@@ -198,26 +223,36 @@ const storedId = societeData._id;
             <label className="form-label">Color</label>
             <div>
             <Autocomplete
-  getItemValue={(item) => item.color}
-  items={colorItems} // Use the colorItems array
-  renderItem={(item, isHighlighted) => (
-    <div
-      key={item._id}
-      style={{ background: isHighlighted ? 'lightgray' : 'white' }}
-    >
-      {item.color}
-    </div>
-  )}
-  value={selectedColor}
-  onChange={(e) => setSelectedColor(e.target.value)}
-  onSelect={(value) => {
-    setSelectedColor(value);
-    setCustomColor(''); // Clear custom Type if selected from suggestions
-  }}
-  inputProps={{
-    placeholder: 'Select a Color or add a new one',
-  }}
-/>
+           
+                getItemValue={(item) => item.color}
+                items={colorItems} // Use the colorItems array
+                 
+                renderItem={(item, isHighlighted) => (
+                  <div
+                    key={item._id}
+                    style={{ background: isHighlighted ? 'lightgray' : 'white' }}
+                  >
+                    {item.color}
+                  </div>
+                )}
+                value={selectedColor}
+                onChange={(e) => setSelectedColor(e.target.value)}
+                onSelect={(value) => {
+                  setSelectedColor(value);
+                  setCustomColor(''); // Clear custom Type if selected from suggestions
+                }}
+               // shouldItemRender={(item, value) =>
+                // item.color.toLowerCase().startsWith(value.toLowerCase()) >-1}
+                     
+                inputProps={{style: {
+                  width: '300px',
+                  height: '30px',
+                  background: '#e4f3f7',
+                  border: '2px outset lightgray',
+                },
+                  placeholder: 'Select a Color or add a new one',
+                }}
+              />
 
             </div>
           </div>
