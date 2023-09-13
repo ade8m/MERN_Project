@@ -6,17 +6,23 @@ import { useSociete } from '../Context/SocieteContext';
 
 export function SocieteComponent() {
 
-   const { setSocieteId } = useSociete();
+  
   const [societeData, setSocieteData] = useState({});
- 
+  const { societeId, setSocieteId } = useSociete(); // Extract societeId and setSocieteId
+
  
 
 
   useEffect(() => {
-    // Retrieve Societe data from local storage
-    const storedSocieteData = JSON.parse(localStorage.getItem('societeData'));
-    setSocieteId(storedSocieteData);
-  }, []);
+     // Retrieve Societe data from local storage
+  const storedSocieteData = JSON.parse(localStorage.getItem('societeData'));
+  
+  if (storedSocieteData) {
+    setSocieteData(storedSocieteData); // Set societe data in the context
+    setSocieteId(storedSocieteData._id); // Set the societe ID in the context
+  }
+}, [setSocieteData, setSocieteId]);
+
 
   const handleInputChange = (event) => {
     const { id, value } = event.target;
@@ -50,8 +56,8 @@ export function SocieteComponent() {
   }
   
   
-    const storedId = societeData._id;
-  
+  const storedId = societeId; // Use the societe ID from the context
+
     if (!storedId) {
       showAlert('Societe ID not found in local storage.', 'error');
       return;
@@ -88,7 +94,7 @@ export function SocieteComponent() {
       Description: societeData.Description,
       Anneé: societeData.Anneé,
     };
-    const storedId = societeData._id;
+    const storedId = societeId; // Use the societe ID from the context
     // Send a request to update the societe object
     fetch(`http://localhost:3001/societe/${storedId}`, {
       method: 'PUT',

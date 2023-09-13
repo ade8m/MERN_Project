@@ -12,17 +12,18 @@ export function VoitureListPage() {
     if (!societeId) {
       return; // Don't fetch voitures if societe ID is not set
     }
-    fetch(`http://localhost:3001/voiture/${availability}`)
+    fetch(`http://localhost:3001/voiture/${availability}?societeId=${societeId}`)
       .then((response) => response.json())
       .then((data) => {
         console.log('List of voiture:', data);
         setVoitureList(data); 
+     
       })
       .catch((error) => {
         console.error('Error fetching voiture list:', error);
       });
   },  [availability, societeId]);
-  
+
   const handleAvailabilityChange = (event) => {
     setAvailability(event.target.value);
   };
