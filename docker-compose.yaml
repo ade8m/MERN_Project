@@ -1,0 +1,17 @@
+version: "3,8"
+services:
+  backend:
+    build: ./back-end
+    ports:
+      - '3001:3001'
+    volumes:
+      - ./back-end:/app
+      -  /app/node_modules
+  frontend:
+    build: ./front
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./front/src:/app/src
+    depends_on:
+      - backend
